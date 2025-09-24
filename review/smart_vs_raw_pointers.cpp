@@ -116,10 +116,9 @@ void trasferir_propiedad(int variable_1, int variable_2, std::unique_ptr<int> pi
     
 }
 
-void main() {
+void main_10() {
     int numero = 1;
     std::unique_ptr<int> pint = std::make_unique<int>(numero);
-
 }
 // 12. Implementa una función que intente copiar un std::unique_ptr y explica el error que ocurre.
 // 13. Crea una función que reciba un std::shared_ptr y muestre el contador de referencias.
