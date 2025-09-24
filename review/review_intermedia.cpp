@@ -1,0 +1,199 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <set>
+#include <algorithm>
+#include <map>
+#include <memory>
+// ===================== EJERCICIOS DE REVIEW INTERMEDIA =====================
+
+// 1. Usa std::set para guardar números únicos introducidos por el usuario.
+// 2. Implementa una función que reciba un std::vector y elimine los elementos duplicados.
+std::vector<int> obtener_numeros() {
+    int cantidad_numeros;
+    std::vector<int> numeros;
+
+    std::cout << "Cuántos números quieres introducir?\n";
+    std::cin >> cantidad_numeros;
+    std::cout << "Dame " << cantidad_numeros << " números.\n";
+    for (int i = 0; i < cantidad_numeros; i++) {
+        int valor;
+        std::cin >> valor;
+        numeros.push_back(valor);
+    }
+    return numeros;
+}
+
+std::set<int> eliminar_duplicados(std::vector<int>& int_vector) {
+    std::set<int> vector_sin_duplicados(int_vector.begin(), int_vector.end());
+    return vector_sin_duplicados;
+}
+
+void main_1() {
+    std::vector<int> numeros;
+    std::set<int> numeros_sin_duplicados;
+    numeros = obtener_numeros();
+    numeros_sin_duplicados = eliminar_duplicados(numeros);
+    std::cout << "El vector sin duplicados y en orden es: [ ";
+    for (auto it = numeros_sin_duplicados.begin(); it!= numeros_sin_duplicados.end(); it++) {
+        std::cout << *it << " ";
+    }
+    std::cout << " ]";
+}
+
+// 3. Crea un programa que ordene un std::vector de strings alfabéticamente usando std::sort.
+std::vector<char> guarda_vector_caracteres() {
+    std::vector<char> char_vector;
+    int cantidad;
+    std::cout << "Cuantos caracteres quieres escribir?\n";
+    std::cin >> cantidad;
+    std::cout << "Dame " << cantidad << " carateres.\n";
+    for (int i = 0; i < cantidad; i++) {
+        char valor;
+        std::cin >> valor;
+        char_vector.push_back(valor);
+    }
+    return char_vector;
+}
+
+void ordena_alfabeticamente_vector(std::vector<char>& char_vector) {
+    std::sort(char_vector.begin(), char_vector.end());
+}
+
+void main_3() {
+    std::vector<char> char_vector;
+    char_vector = guarda_vector_caracteres();
+    ordena_alfabeticamente_vector(char_vector);
+    std::cout << "El vector de caracteres ordenado es < ";
+    for (int i = 0; i < char_vector.size(); i++) {
+        std::cout << char_vector[i] << " ";
+    }
+    std::cout << " >\n";
+}
+
+// 4. Lee una cadena y cuenta cuántas veces aparece cada letra usando std::map.
+std::string guardar_cadena() {
+    std::string cadena;
+    std::cout << "Escribe una cadena de caracteres.\n";
+    std::cin >> cadena;
+    return cadena;
+}
+
+std::map<char, int> dicionario_letra_contador(std::string cadena) {
+    std::map<char, int> diccionario;
+    for (char c: cadena) {
+        diccionario[c]++;   // cada vez que encuentra la letra c una vez incrementa el valor de la clave c
+    }
+    return diccionario;
+}
+
+void main_4() {
+    std::string cadena;
+    std::set<char> letras;
+    std::map<char, int> diccionario;
+
+    cadena = guardar_cadena();
+    diccionario = dicionario_letra_contador(cadena);
+    for (const auto& par: diccionario) {
+        std::cout << "Letra: " << par.first << ", Cantidad: " << par.second << "\n";
+    }
+}
+
+// 5. Implementa una función que reciba un puntero a int y lo incremente.
+void incrementar_puntero(int *pint) {
+    *pint = 1 + *pint;
+}
+
+void main_5() {
+    int numero = 1;
+    int *pint = &numero;
+    std::cout << "El valor antes de la función es :" << numero << "\n";
+    incrementar_puntero(pint);
+    std::cout << "El valor después de la función es :" << numero << "\n";
+}
+
+// 6. Crea un array dinámico usando new y libera la memoria con delete.
+void crear_liberar() {
+    int *pint = new int;
+    *pint = 10;
+    std::cout << "El puntero apunta a una dirección " << pint << " que guarda el valor: " << *pint << "\n";
+    delete pint;
+    std::cout << "Se ha liberado la memoria.\n";
+}
+void main_6() {
+    crear_liberar();
+}
+
+// 7. Implementa una función que reciba un puntero doble (int**) y modifique una matriz.
+void modificar_matriz(int **matriz, const int dimension_matriz) {
+    //suma la matriz identidad
+    for (int i = 0; i < dimension_matriz; i++) {
+        matriz[i][i]++;
+    }
+}
+
+void mostrar_matriz(int **matriz, const int dimension_matriz) {
+    for (int i = 0; i < dimension_matriz; i++) {
+        std::cout << "\n";
+        for (int j = 0; j < dimension_matriz; j++) {
+            std::cout << matriz[i][j] << " ";
+        }
+    }
+    std::cout << "\n";
+}
+
+void main_7() {
+    int dimension_matriz;
+    std::cout << "De qué dimension quieres la matriz?\n";
+    std::cin >> dimension_matriz;
+    int **matriz = new int*[dimension_matriz];
+    for (int i = 0; i < dimension_matriz; i++) {
+        matriz[i] = new int[dimension_matriz];
+        for (int j = 0; j < dimension_matriz; j++) {
+            matriz[i][j] = std::rand() %100;
+        }
+    }
+    std::cout << "La matriz antes de modificarse es: \n";
+    mostrar_matriz(matriz, dimension_matriz);
+    modificar_matriz(matriz, dimension_matriz);
+    std::cout << "La matriz después de modificarse es: \n";
+    mostrar_matriz(matriz, dimension_matriz);
+
+    //liberar memoria
+    for (int i = 0; i < dimension_matriz; i++) {
+        delete [] matriz[i];
+    }
+    delete[] matriz;
+}
+// 8. Usa std::unique_ptr para gestionar la memoria de un objeto.
+void crear_unico() {
+    std::unique_ptr<int> pint = std::make_unique<int>(10);
+    std::cout << *pint << std::endl;
+}
+
+void main_8() {
+    crear_unico();
+}
+
+// 9. Crea una clase con un constructor que lance una excepción si recibe un valor negativo.
+// 10. Implementa una función que reciba un std::vector por referencia y lo modifique.
+// 11. Crea una función que devuelva un std::pair con el mínimo y máximo de un vector.
+// 12. Usa std::stack para invertir una cadena de texto.
+// 13. Implementa una función que reciba un std::queue y muestre sus elementos.
+// 14. Crea una función que reciba un std::array y calcule la suma de sus elementos.
+// 15. Implementa una función que reciba un std::string y devuelva una versión sin espacios.
+// 16. Usa std::getline para leer una línea completa de texto con espacios.
+// 17. Implementa una función que reciba un std::vector y lance una excepción si está vacío.
+// 18. Crea una clase con atributos privados y métodos públicos para acceder y modificar esos atributos.
+// 19. Implementa una función que reciba un puntero constante a int y muestre su valor.
+// 20. Crea una función que reciba un std::vector de punteros y libere su memoria.
+// 21. Usa std::find para buscar un elemento en un vector y mostrar su posición.
+// 22. Implementa una función que reciba un std::vector y lo ordene en orden descendente.
+// 23. Crea una función que reciba un std::map y muestre todas sus claves y valores.
+// 24. Implementa una función que reciba un std::vector y elimine todos los elementos menores que un valor dado.
+// 25. Crea una clase que gestione errores usando try-catch en sus métodos.
+
+int main() {
+    main_8();
+    return 0;
+}
