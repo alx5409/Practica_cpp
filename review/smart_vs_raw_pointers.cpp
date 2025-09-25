@@ -126,6 +126,18 @@ void main_11() {
     std::cout << "Se ha transferido la propiedad\n";
 }
 // 12. Implementa una función que intente copiar un std::unique_ptr y explica el error que ocurre.
+void copiar_unique_ptr(std::unique_ptr<int>& pint, std::unique_ptr<int>& pint_2) {
+    // pint_2 = pint;   // Se ha comentado para que no de error
+}
+
+void main_12() {
+    int numero = 1;
+    std::unique_ptr<int> pint = std::make_unique<int>(numero);
+    std::unique_ptr<int> p_another_int;
+    copiar_unique_ptr(pint, p_another_int);
+    std::cout << "Se ha copiado correctamente.\n";
+}
+
 // 13. Crea una función que reciba un std::shared_ptr y muestre el contador de referencias.
 // 14. Crea una función que reciba un puntero normal y explique los riesgos de acceso a memoria liberada.
 // 15. Crea una clase con un método que devuelva un std::unique_ptr a un objeto creado dentro de la clase.
