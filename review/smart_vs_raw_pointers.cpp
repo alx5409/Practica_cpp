@@ -112,13 +112,18 @@ void main_10() {
 }
 
 // 11. Implementa una función que transfiera la propiedad de un std::unique_ptr entre dos variables.
-void trasferir_propiedad(int variable_1, int variable_2, std::unique_ptr<int> pint) {
-    
+void transferir_propiedad(std::unique_ptr<int>& porigen, std::unique_ptr<int>& pdestino) {
+    pdestino = std::move(porigen);  // movemos la propiedad de porigen a pdestino
 }
 
-void main_10() {
+void main_11() {
     int numero = 1;
-    std::unique_ptr<int> pint = std::make_unique<int>(numero);
+    std::unique_ptr<int> porigen = std::make_unique<int>(numero);
+    std::unique_ptr<int> pdestino;
+    
+    // Le pasamos el puntero por referencia
+    transferir_propiedad(porigen, pdestino);
+    std::cout << "Se ha transferido la propiedad\n";
 }
 // 12. Implementa una función que intente copiar un std::unique_ptr y explica el error que ocurre.
 // 13. Crea una función que reciba un std::shared_ptr y muestre el contador de referencias.
@@ -130,6 +135,6 @@ void main_10() {
 // 19. Crea una función que reciba un puntero normal y lo pase a otra función.
 // 20. Compara el uso de memoria y seguridad entre punteros normales y punteros inteligentes en un ejemplo simple.
 int main() {
-    main_10();
+    main_11();
     return 0;
 }

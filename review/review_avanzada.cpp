@@ -60,7 +60,7 @@ public:
         }
         return sum;
     }
-    //f(x) = c_i * x^i --> f'(x) = i * c_i * x^(i-1);
+    //p(x) = c_i * x^i --> p'(x) = i * c_i * x^(i-1);
     void derivar_polinomio() {
         if (grado == 0) {
             coef = {0.0}; // derivada de una constante
