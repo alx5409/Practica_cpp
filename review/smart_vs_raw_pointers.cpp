@@ -129,7 +129,6 @@ void main_10() {
 // 18. Crea una función que reciba un std::unique_ptr y lo pase a otra función usando std::move.
 // 19. Crea una función que reciba un puntero normal y lo pase a otra función.
 // 20. Compara el uso de memoria y seguridad entre punteros normales y punteros inteligentes en un ejemplo simple.
-
 int main() {
     main_10();
     return 0;
