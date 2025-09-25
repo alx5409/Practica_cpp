@@ -190,11 +190,32 @@ public:
 };
 
 // 16. Crea una función que reciba un std::weak_ptr y verifique si el objeto aún existe.
+void verificar_weak_pointer(std::weak_ptr<int> puntero_debil) {
+    
+}
+
+void main_16() {
+    int numero = 1;
+    std::shared_ptr<int> pint = std::make_shared<int>(numero);
+    std::weak_ptr<int> wpint = pint;
+}
+
 // 17. Crea una función que reciba un std::shared_ptr y lo comparta entre varias variables.
+void compartir_shared_pointer(const std::shared_ptr<int> pint) {
+    std::shared_ptr<int> pint_local = pint;
+    std::cout << "Se ha hecho una copia local del puntero.\n";
+}
+
+void main_17() {
+    int numero = 1;
+    std::shared_ptr<int> pint = std::make_shared<int>(numero);
+    compartir_shared_pointer(pint);
+}
+
 // 18. Crea una función que reciba un std::unique_ptr y lo pase a otra función usando std::move.
 // 19. Crea una función que reciba un puntero normal y lo pase a otra función.
 // 20. Compara el uso de memoria y seguridad entre punteros normales y punteros inteligentes en un ejemplo simple.
 int main() {
-    // main_16();
+    main_17();
     return 0;
 }
