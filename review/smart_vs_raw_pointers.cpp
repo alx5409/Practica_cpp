@@ -112,25 +112,141 @@ void main_10() {
 }
 
 // 11. Implementa una función que transfiera la propiedad de un std::unique_ptr entre dos variables.
-void trasferir_propiedad(int variable_1, int variable_2, std::unique_ptr<int> pint) {
+void transferir_propiedad(std::unique_ptr<int>& porigen, std::unique_ptr<int>& pdestino) {
+    pdestino = std::move(porigen);  // movemos la propiedad de porigen a pdestino
+}
+
+void main_11() {
+    int numero = 1;
+    std::unique_ptr<int> porigen = std::make_unique<int>(numero);
+    std::unique_ptr<int> pdestino;
+    
+    // Le pasamos el puntero por referencia
+    transferir_propiedad(porigen, pdestino);
+    std::cout << "Se ha transferido la propiedad\n";
+}
+// 12. Implementa una función que intente copiar un std::unique_ptr y explica el error que ocurre.
+void copiar_unique_ptr(std::unique_ptr<int>& pint, std::unique_ptr<int>& pint_2) {
+    // pint_2 = pint;   // Se ha comentado para que no de error
+}
+
+void main_12() {
+    int numero = 1;
+    std::unique_ptr<int> pint = std::make_unique<int>(numero);
+    std::unique_ptr<int> p_another_int;
+    copiar_unique_ptr(pint, p_another_int);
+    std::cout << "Se ha copiado correctamente.\n";
+}
+
+// 13. Crea una función que reciba un std::shared_ptr y muestre el contador de referencias.
+void mostrar_contador_referencias(const std::shared_ptr<int>& pint) {
+    std::cout << "Hay " << pint.use_count() << " referencias.\n";
+}
+
+void main_13() {
+    int numero = 1;
+    std::shared_ptr<int> pint_1 = std::make_shared<int>(numero);
+    mostrar_contador_referencias(pint_1);
+    std::shared_ptr<int> pint_2 = pint_1;
+    mostrar_contador_referencias(pint_2);
+    std::shared_ptr<int> pint_3 = pint_1;
+    mostrar_contador_referencias(pint_3);
+}
+
+// 14. Crea una función que reciba un puntero normal y explique los riesgos de acceso a memoria liberada.
+void recibe_puntero(int *pint) {
+    std::cout << "Se ha recibido el puntero y apunta a la variable con valor " << *pint <<" .\n";
+}
+
+void main_14() {
+    int numero = 1;
+    int *pint = new int(numero);
+    recibe_puntero(pint);
+    delete pint;
+    recibe_puntero(pint);
+}
+
+// 15. Crea una clase con un método que devuelva un std::unique_ptr a un objeto creado dentro de la clase.
+class Direccion_memoria {
+public:
+    int *direccion;
+    int valor;
+};
+
+class Prueba_puntero {
+public:
+    int numero;
+    Direccion_memoria puntero_y_valor;
+    std::unique_ptr<int> pint;
+
+    std::unique_ptr<int> devolver_puntero() {
+        return std::make_unique<int>(numero);
+    }
+    void asignar_direccion() {
+        pint = devolver_puntero();
+        puntero_y_valor.direccion = pint.get();
+        puntero_y_valor.valor = *pint;
+    }
+};
+
+// 16. Crea una función que reciba un std::weak_ptr y verifique si el objeto aún existe.
+void verificar_weak_pointer(std::weak_ptr<int> puntero_debil) {
     
 }
 
-void main_10() {
+void main_16() {
+    int numero = 1;
+    std::shared_ptr<int> pint = std::make_shared<int>(numero);
+    std::weak_ptr<int> wpint = pint;
+}
+
+// 17. Crea una función que reciba un std::shared_ptr y lo comparta entre varias variables.
+void compartir_shared_pointer(const std::shared_ptr<int> pint) {
+    std::shared_ptr<int> pint_local = pint;
+    std::cout << "Se ha hecho una copia local del puntero.\n";
+}
+
+void main_17() {
+    int numero = 1;
+    std::shared_ptr<int> pint = std::make_shared<int>(numero);
+    compartir_shared_pointer(pint);
+}
+
+// 18. Crea una función que reciba un std::unique_ptr y lo pase a otra función usando std::move.
+void mostrar_valor(std::unique_ptr<int> pint) {
+    std::cout << "El puntero apunta a la variable con valor " << *pint << " .\n";
+}
+
+void recibir_puntero_unico_y_pasarlo(std::unique_ptr<int> pint) {
+    mostrar_valor(std::move(pint));
+}
+
+void main_18() {
     int numero = 1;
     std::unique_ptr<int> pint = std::make_unique<int>(numero);
+    recibir_puntero_unico_y_pasarlo(std::move(pint));
 }
-// 12. Implementa una función que intente copiar un std::unique_ptr y explica el error que ocurre.
-// 13. Crea una función que reciba un std::shared_ptr y muestre el contador de referencias.
-// 14. Crea una función que reciba un puntero normal y explique los riesgos de acceso a memoria liberada.
-// 15. Crea una clase con un método que devuelva un std::unique_ptr a un objeto creado dentro de la clase.
-// 16. Crea una función que reciba un std::weak_ptr y verifique si el objeto aún existe.
-// 17. Crea una función que reciba un std::shared_ptr y lo comparta entre varias variables.
-// 18. Crea una función que reciba un std::unique_ptr y lo pase a otra función usando std::move.
-// 19. Crea una función que reciba un puntero normal y lo pase a otra función.
-// 20. Compara el uso de memoria y seguridad entre punteros normales y punteros inteligentes en un ejemplo simple.
 
+// 19. Crea una función que reciba un puntero normal y lo pase a otra función.
+void mostrar_valor_puntero(int *pint) {
+    std::cout << "El puntero normal apunta a la variable con valor " << *pint << " .\n";
+}
+
+void recibir_puntero_y_pasarlo(int *pint) {
+    mostrar_valor_puntero(pint);
+}
+
+void main_19() {
+    int numero = 1;
+    int *pint = &numero;
+    recibir_puntero_y_pasarlo(pint);
+}
+
+// 20. Compara el uso de memoria y seguridad entre punteros normales y punteros inteligentes en un ejemplo simple.
+/* Los ejercicios anteriores son ejemplos de seguridad de memoria cuando se liberaba la memoria del puntero
+pero aun así se podía seguir usando. 
+*/
 int main() {
-    main_10();
+    main_19();
     return 0;
 }
