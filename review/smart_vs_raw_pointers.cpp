@@ -167,12 +167,34 @@ void main_14() {
 }
 
 // 15. Crea una clase con un método que devuelva un std::unique_ptr a un objeto creado dentro de la clase.
+class Direccion_memoria {
+public:
+    int *direccion;
+    int valor;
+};
+
+class Prueba_puntero {
+public:
+    int numero;
+    Direccion_memoria puntero_y_valor;
+    std::unique_ptr<int> pint;
+
+    std::unique_ptr<int> devolver_puntero() {
+        return std::make_unique<int>(numero);
+    }
+    void asignar_direccion() {
+        pint = devolver_puntero();
+        puntero_y_valor.direccion = pint.get();
+        puntero_y_valor.valor = *pint;
+    }
+};
+
 // 16. Crea una función que reciba un std::weak_ptr y verifique si el objeto aún existe.
 // 17. Crea una función que reciba un std::shared_ptr y lo comparta entre varias variables.
 // 18. Crea una función que reciba un std::unique_ptr y lo pase a otra función usando std::move.
 // 19. Crea una función que reciba un puntero normal y lo pase a otra función.
 // 20. Compara el uso de memoria y seguridad entre punteros normales y punteros inteligentes en un ejemplo simple.
 int main() {
-    main_14();
+    // main_16();
     return 0;
 }
