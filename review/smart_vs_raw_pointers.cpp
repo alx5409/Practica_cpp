@@ -213,9 +213,40 @@ void main_17() {
 }
 
 // 18. Crea una función que reciba un std::unique_ptr y lo pase a otra función usando std::move.
+void mostrar_valor(std::unique_ptr<int> pint) {
+    std::cout << "El puntero apunta a la variable con valor " << *pint << " .\n";
+}
+
+void recibir_puntero_unico_y_pasarlo(std::unique_ptr<int> pint) {
+    mostrar_valor(std::move(pint));
+}
+
+void main_18() {
+    int numero = 1;
+    std::unique_ptr<int> pint = std::make_unique<int>(numero);
+    recibir_puntero_unico_y_pasarlo(std::move(pint));
+}
+
 // 19. Crea una función que reciba un puntero normal y lo pase a otra función.
+void mostrar_valor_puntero(int *pint) {
+    std::cout << "El puntero normal apunta a la variable con valor " << *pint << " .\n";
+}
+
+void recibir_puntero_y_pasarlo(int *pint) {
+    mostrar_valor_puntero(pint);
+}
+
+void main_19() {
+    int numero = 1;
+    int *pint = &numero;
+    recibir_puntero_y_pasarlo(pint);
+}
+
 // 20. Compara el uso de memoria y seguridad entre punteros normales y punteros inteligentes en un ejemplo simple.
+/* Los ejercicios anteriores son ejemplos de seguridad de memoria cuando se liberaba la memoria del puntero
+pero aun así se podía seguir usando. 
+*/
 int main() {
-    main_17();
+    main_19();
     return 0;
 }
