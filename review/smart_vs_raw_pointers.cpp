@@ -152,7 +152,20 @@ void main_13() {
     std::shared_ptr<int> pint_3 = pint_1;
     mostrar_contador_referencias(pint_3);
 }
+
 // 14. Crea una función que reciba un puntero normal y explique los riesgos de acceso a memoria liberada.
+void recibe_puntero(int *pint) {
+    std::cout << "Se ha recibido el puntero y apunta a la variable con valor " << *pint <<" .\n";
+}
+
+void main_14() {
+    int numero = 1;
+    int *pint = new int(numero);
+    recibe_puntero(pint);
+    delete pint;
+    recibe_puntero(pint);
+}
+
 // 15. Crea una clase con un método que devuelva un std::unique_ptr a un objeto creado dentro de la clase.
 // 16. Crea una función que reciba un std::weak_ptr y verifique si el objeto aún existe.
 // 17. Crea una función que reciba un std::shared_ptr y lo comparta entre varias variables.
@@ -160,6 +173,6 @@ void main_13() {
 // 19. Crea una función que reciba un puntero normal y lo pase a otra función.
 // 20. Compara el uso de memoria y seguridad entre punteros normales y punteros inteligentes en un ejemplo simple.
 int main() {
-    main_13();
+    main_14();
     return 0;
 }
