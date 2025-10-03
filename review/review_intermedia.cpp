@@ -176,7 +176,47 @@ void main_8() {
 }
 
 // 9. Crea una clase con un constructor que lance una excepción si recibe un valor negativo.
+class Excepcion {
+public:
+    int valor;
+
+    Excepcion(int value) {
+        if (value < 0) {
+            throw std::invalid_argument("Error al construir, el valor que has introducido es negativo.\n");
+        } else {
+            valor = value;
+        }
+    }
+};
+
+void main_9() {
+    int value;
+    std::cout << "Dame un número.\n";
+    std::cin >> value;
+    Excepcion excepcion(value);
+}
+
 // 10. Implementa una función que reciba un std::vector por referencia y lo modifique.
+void modificar_vector(std::vector<int>& int_vector) {
+    int_vector.push_back(1);
+}
+
+void mostrar_vector(const std::vector<int> int_vector) {
+    for (int i = 0; i < int_vector.size(); i++) {
+        std::cout << int_vector[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+void main_10() {
+    std::vector<int> int_vector = {1, 2, 3};
+    std::cout << "El vector antes de usar la funcion es: ";
+    mostrar_vector(int_vector);
+    modificar_vector(int_vector);
+    std::cout << "El vector después de usar la funcion es: ";
+    mostrar_vector(int_vector);
+}
+
 // 11. Crea una función que devuelva un std::pair con el mínimo y máximo de un vector.
 // 12. Usa std::stack para invertir una cadena de texto.
 // 13. Implementa una función que reciba un std::queue y muestre sus elementos.
@@ -194,6 +234,6 @@ void main_8() {
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_8();
+    main_10();
     return 0;
 }
