@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <map>
 #include <memory>
+#include <stack>
 // ===================== EJERCICIOS DE REVIEW INTERMEDIA =====================
 
 // 1. Usa std::set para guardar números únicos introducidos por el usuario.
@@ -218,7 +219,48 @@ void main_10() {
 }
 
 // 11. Crea una función que devuelva un std::pair con el mínimo y máximo de un vector.
+std::pair<int, int> min_y_max(std::vector<int> int_vector) {
+    int min = int_vector[0];
+    int max = int_vector[0];
+
+    for (int i = 0; i < int_vector.size(); i++) {
+        if (min > int_vector[i]) {
+            min = int_vector[i];
+        }
+        if (max < int_vector[i]) {
+            max = int_vector[i];
+        }
+    }
+    return std::pair<int, int> {min, max};
+}
+
+void main_11() {
+    std::vector<int> int_vector = {1, 3, 4, 2};
+    std::pair<int, int> min_max = min_y_max(int_vector);
+    std::cout << "El minimo del vector es " << min_max.first << " y el maximo es " << min_max.second << std::endl;
+}
+
 // 12. Usa std::stack para invertir una cadena de texto.
+void invertir_string(std::string &cadena) {
+    std::stack<char> stack_cadena;
+    for (int i = 0; i < cadena.size(); i++) {
+        stack_cadena.push(cadena[i]);
+    }
+    for (int i = 0; i < cadena.size(); i++) {
+        cadena[i] = stack_cadena.top();
+        stack_cadena.pop();
+    }
+}
+
+void main_12() {
+    std::string cadena;
+    std::stack<char> cadena_invertida;
+    std::cout << "Introduce una cadena de texto.\n";
+    std::cin >> cadena;
+    std::cout << "La cadena antes de invertir la cadena es :" << cadena << std::endl;
+    invertir_string(cadena);
+    std::cout << "La cadena después de invertir la cadena es :" << cadena;
+}
 // 13. Implementa una función que reciba un std::queue y muestre sus elementos.
 // 14. Crea una función que reciba un std::array y calcule la suma de sus elementos.
 // 15. Implementa una función que reciba un std::string y devuelva una versión sin espacios.
@@ -234,6 +276,6 @@ void main_10() {
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_10();
+    main_12();
     return 0;
 }
