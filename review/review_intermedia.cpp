@@ -328,7 +328,19 @@ void main_16() {
     std::cout << "La cadena que has introducido es: \n" << cadena_con_espacios;
 }
 // 17. Implementa una función que reciba un std::vector y lance una excepción si está vacío.
+void comprobar_vector_vacio(std::vector<int> int_vector) {
+    if (int_vector.empty()) {
+        throw std::runtime_error("El vector esta vacío.\n");
+    }
+    std::cout << "El vector no esta vacio.\n";
+}
 
+void main_17() {
+    std::vector<int> vector_vacio;
+    std::vector<int> vector_no_vacio = {1, 2, 3};
+    // comprobar_vector_vacio(vector_vacio);
+    comprobar_vector_vacio(vector_no_vacio);
+}
 // 18. Crea una clase con atributos privados y métodos públicos para acceder y modificar esos atributos.
 // 19. Implementa una función que reciba un puntero constante a int y muestre su valor.
 // 20. Crea una función que reciba un std::vector de punteros y libere su memoria.
@@ -339,6 +351,6 @@ void main_16() {
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_16();
+    main_17();
     return 0;
 }
