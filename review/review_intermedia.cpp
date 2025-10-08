@@ -389,6 +389,25 @@ void main_19() {
 }
 
 // 20. Crea una función que reciba un std::vector de punteros y libere su memoria.
+void liberar_memoria_punteros(std::vector<int*>& p_vectors) {
+    for (int i = 0; i < p_vectors.size(); i++) {
+        delete(p_vectors[i]);
+    }
+    std::cout << "Se ha liberado la memoria con exito.\n";
+}
+
+void main_20() {
+    std::vector<int> int_vector = {5, 4, 3, 2, 1, 0};
+    std::vector<int*> p_int_vector;
+
+    for (int i = 0; i < int_vector.size(); i++) {
+        int *p_int = new int(int_vector[i]);
+        p_int_vector.push_back(p_int); 
+    }
+    
+    liberar_memoria_punteros(p_int_vector);
+}
+
 // 21. Usa std::find para buscar un elemento en un vector y mostrar su posición.
 // 22. Implementa una función que reciba un std::vector y lo ordene en orden descendente.
 // 23. Crea una función que reciba un std::map y muestre todas sus claves y valores.
@@ -396,6 +415,6 @@ void main_19() {
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_19();
+    main_20();
     return 0;
 }
