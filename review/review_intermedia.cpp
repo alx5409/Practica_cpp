@@ -338,7 +338,7 @@ void comprobar_vector_vacio(std::vector<int> int_vector) {
 void main_17() {
     std::vector<int> vector_vacio;
     std::vector<int> vector_no_vacio = {1, 2, 3};
-    // comprobar_vector_vacio(vector_vacio);
+    comprobar_vector_vacio(vector_vacio);
     comprobar_vector_vacio(vector_no_vacio);
 }
 // 18. Crea una clase con atributos privados y métodos públicos para acceder y modificar esos atributos.
