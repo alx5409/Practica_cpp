@@ -321,7 +321,14 @@ void main_15() {
 
 }
 // 16. Usa std::getline para leer una línea completa de texto con espacios.
+void main_16() {
+    std::string cadena_con_espacios;
+    std::cout << "Dame una cadena de caracteres.\n";
+    std::getline(std::cin,  cadena_con_espacios);
+    std::cout << "La cadena que has introducido es: \n" << cadena_con_espacios;
+}
 // 17. Implementa una función que reciba un std::vector y lance una excepción si está vacío.
+
 // 18. Crea una clase con atributos privados y métodos públicos para acceder y modificar esos atributos.
 // 19. Implementa una función que reciba un puntero constante a int y muestre su valor.
 // 20. Crea una función que reciba un std::vector de punteros y libere su memoria.
@@ -332,6 +339,6 @@ void main_15() {
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_15();
+    main_16();
     return 0;
 }
