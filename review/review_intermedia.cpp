@@ -7,6 +7,7 @@
 #include <memory>
 #include <stack>
 #include <queue>
+#include <array>
 // ===================== EJERCICIOS DE REVIEW INTERMEDIA =====================
 
 // 1. Usa std::set para guardar números únicos introducidos por el usuario.
@@ -285,6 +286,20 @@ void main_13() {
     mostrar_cola(cola);
 }
 // 14. Crea una función que reciba un std::array y calcule la suma de sus elementos.
+int suma_array(const std::array<int, 4>& int_array) {
+    int suma = 0;
+    for (int i = 0; i < int_array.size(); i++){
+        suma += int_array[i];
+    }
+    return suma;
+}
+
+void main_14() {
+    std::array int_array = {1, 2, 3, 4};
+    int suma;
+    suma = suma_array(int_array);
+    std::cout << "La suma es: " << suma << std::endl;
+}
 // 15. Implementa una función que reciba un std::string y devuelva una versión sin espacios.
 // 16. Usa std::getline para leer una línea completa de texto con espacios.
 // 17. Implementa una función que reciba un std::vector y lance una excepción si está vacío.
@@ -298,6 +313,6 @@ void main_13() {
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_13();
+    main_14();
     return 0;
 }
