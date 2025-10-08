@@ -409,12 +409,25 @@ void main_20() {
 }
 
 // 21. Usa std::find para buscar un elemento en un vector y mostrar su posición.
+void main_21() {
+    std::vector<int> int_vector = {5, 4, 3, 2, 1};
+    int posicion;
+    int valor = 2;
+    auto it = std::find(int_vector.begin(), int_vector.end(), valor);
+    if (it != int_vector.end()) {
+        int posicion = std::distance(int_vector.begin(), it);
+        std::cout << "Posición: " << posicion << std::endl;
+    } else {
+        std::cout << "No encontrado" << std::endl;
+    }
+}
+
 // 22. Implementa una función que reciba un std::vector y lo ordene en orden descendente.
 // 23. Crea una función que reciba un std::map y muestre todas sus claves y valores.
 // 24. Implementa una función que reciba un std::vector y elimine todos los elementos menores que un valor dado.
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_20();
+    main_21();
     return 0;
 }
