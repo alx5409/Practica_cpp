@@ -342,6 +342,40 @@ void main_17() {
     comprobar_vector_vacio(vector_no_vacio);
 }
 // 18. Crea una clase con atributos privados y métodos públicos para acceder y modificar esos atributos.
+class Publico_y_privado {
+    int numero_privado;
+    std::string cadena_privada;
+
+    void imprime_cadena_y_numero_privado() {
+        std::cout << "El número privado es: " << numero_privado << std::endl;
+        std::cout << "La cadena privada es: " << cadena_privada << std::endl;
+    }
+
+public:
+    int numero_publico;
+    std::string cadena_publica;
+
+    // Constructor de la clase, siempre es publico
+    Publico_y_privado(int numero, std::string cadena) {
+        numero_publico = numero;
+        cadena_publica = cadena;
+
+        numero_privado = numero_publico - 1;
+        cadena_privada = quitar_espacios(cadena_publica);
+    }
+
+    void imprime_cadena_y_numero_publico() {
+    std::cout << "El número publico es: " << numero_publico << std::endl;
+    std::cout << "La cadena publica es: " << cadena_publica << std::endl;
+    }
+};
+
+void main_18() {
+    int numero = 3;
+    std::string cadena = "Hola, qué tal?";
+    Publico_y_privado publico_privado(numero, cadena);
+    publico_privado.imprime_cadena_y_numero_publico();
+}
 // 19. Implementa una función que reciba un puntero constante a int y muestre su valor.
 // 20. Crea una función que reciba un std::vector de punteros y libere su memoria.
 // 21. Usa std::find para buscar un elemento en un vector y mostrar su posición.
@@ -351,6 +385,6 @@ void main_17() {
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_17();
+    main_18();
     return 0;
 }
