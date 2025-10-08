@@ -6,6 +6,7 @@
 #include <map>
 #include <memory>
 #include <stack>
+#include <queue>
 // ===================== EJERCICIOS DE REVIEW INTERMEDIA =====================
 
 // 1. Usa std::set para guardar números únicos introducidos por el usuario.
@@ -262,6 +263,27 @@ void main_12() {
     std::cout << "La cadena después de invertir la cadena es :" << cadena;
 }
 // 13. Implementa una función que reciba un std::queue y muestre sus elementos.
+void mostrar_cola(std::queue<int> cola) {
+    while(!cola.empty()){
+        int valor_popeado = cola.front();
+        std::cout << valor_popeado << " ";
+        cola.pop();
+    }
+}
+
+void main_13() {
+    std::queue<int> cola;
+    int cola_size;
+    std::cout << "De qué tamaño quieres la cola\n";
+    std::cin >> cola_size;
+    while (cola.size() < cola_size){
+        int valor;
+        std::cout << "Dame un numero: \n";
+        std::cin >> valor;
+        cola.push(valor);
+    }
+    mostrar_cola(cola);
+}
 // 14. Crea una función que reciba un std::array y calcule la suma de sus elementos.
 // 15. Implementa una función que reciba un std::string y devuelva una versión sin espacios.
 // 16. Usa std::getline para leer una línea completa de texto con espacios.
@@ -276,6 +298,6 @@ void main_12() {
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_12();
+    main_13();
     return 0;
 }
