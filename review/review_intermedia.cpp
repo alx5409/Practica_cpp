@@ -376,7 +376,18 @@ void main_18() {
     Publico_y_privado publico_privado(numero, cadena);
     publico_privado.imprime_cadena_y_numero_publico();
 }
+
 // 19. Implementa una función que reciba un puntero constante a int y muestre su valor.
+void mostrar_contenido_puntero(const int *p_int) {
+    std::cout << "El valor de la variable a la que apunta el puntero es: " << *p_int << std::endl;
+}
+
+void main_19() {
+    int numero = 5;
+    int *p_int = &numero;
+    mostrar_contenido_puntero(p_int);
+}
+
 // 20. Crea una función que reciba un std::vector de punteros y libere su memoria.
 // 21. Usa std::find para buscar un elemento en un vector y mostrar su posición.
 // 22. Implementa una función que reciba un std::vector y lo ordene en orden descendente.
@@ -385,6 +396,6 @@ void main_18() {
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_18();
+    main_19();
     return 0;
 }
