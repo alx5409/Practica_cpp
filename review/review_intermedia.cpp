@@ -301,6 +301,25 @@ void main_14() {
     std::cout << "La suma es: " << suma << std::endl;
 }
 // 15. Implementa una función que reciba un std::string y devuelva una versión sin espacios.
+std::string quitar_espacios(std::string cadena) {
+    std::string cadena_sin_espacios;
+    for (char c : cadena) {
+        if (c != ' ') {
+            cadena_sin_espacios += c;
+        }
+    }
+    return cadena_sin_espacios;
+}
+
+void main_15() {
+    std::string cadena;
+    std::string cadena_sin_espacios;
+    std::cout << "Dame una cadena de caracteres.\n";
+    std::getline(std::cin, cadena);
+    cadena_sin_espacios = quitar_espacios(cadena);
+    std::cout << " La cadena sin espacios es " << cadena_sin_espacios << std::endl;
+
+}
 // 16. Usa std::getline para leer una línea completa de texto con espacios.
 // 17. Implementa una función que reciba un std::vector y lance una excepción si está vacío.
 // 18. Crea una clase con atributos privados y métodos públicos para acceder y modificar esos atributos.
@@ -313,6 +332,6 @@ void main_14() {
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_14();
+    main_15();
     return 0;
 }
