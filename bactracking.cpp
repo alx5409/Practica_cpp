@@ -2,6 +2,7 @@
 #include <iostream>
 #include <set>
 #include <vector>
+#include <map>
 
 // 1. Generar todas las combinaciones de un conjunto
 //    Dado un conjunto de números, genera todas las combinaciones posibles de tamaño k.
@@ -190,7 +191,30 @@ void main_4() {
 
 // 5. Sumas objetivo (Subset Sum)
 //    Dado un conjunto de números y un objetivo, encuentra todos los subconjuntos cuya suma sea igual al objetivo.
+void hallar_subconjunto_suma(std::set<int> subconjunto, int suma) {
+}
 
+void mostrar_contenido_vector(std::vector<int> int_vector) {
+    std::cout << "[ ";
+    for (int i = 0; i < int_vector.size(); i++) {
+        std::cout << int_vector[i] << " ";
+    }
+    std::cout << "]\n";
+}
+void mostrar_todos_subconjuntos_por_suma(std::set<int> conjunto, int suma) {
+    // std::map<int, std::vector<int>> diccionario_sumas;
+    std::vector<int> posibles_elementos;
+    for (int elementos : conjunto) {
+        posibles_elementos.push_back(elementos);
+    }
+    mostrar_contenido_vector(posibles_elementos);
+}
+
+void main_5() {
+    std::set<int> conjunto_enteros = {4, 3, 6, 2, 1};
+    int suma_objetivo = 10;
+    mostrar_todos_subconjuntos_por_suma(conjunto_enteros, suma_objetivo);
+}
 // 6. Labyrinth/maze solver
 //    Dado un laberinto representado como una matriz, encuentra un camino desde la entrada hasta la salida.
 
@@ -237,6 +261,6 @@ void main_4() {
 //     Dado un tablero rectangular, encuentra todas las formas de cubrirlo completamente con fichas de dominó (2x1) sin solapamientos ni huecos.
 
 int main() {
-    main_4();
+    main_5();
     return 0;
 }
