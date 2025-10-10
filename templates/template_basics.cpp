@@ -22,7 +22,23 @@ void main_1() {
     intercambiar_valores(valor, segundo_valor);
     mostrar_valores(valor, segundo_valor);
 }
+
 // Ejercicio 2: Escribe una función template que devuelva el máximo de dos valores de cualquier tipo.
+template <typename T>
+T maximo(T a, T b) {
+    if (a > b) {
+        return a;
+    }
+    return b;
+}
+
+void main_2() {
+    int valor_1 = 4;
+    int valor_2 = 2;
+
+    int maxim = maximo(valor_1, valor_2);
+    std::cout << "El valor máximo es: " << maxim << std::endl;
+}
 
 // Ejercicio 3: Escribe una función template que imprima los elementos de un vector de cualquier tipo.
 
@@ -41,6 +57,6 @@ void main_1() {
 // Ejercicio 10: Escribe una clase template llamada Caja que almacene un solo valor y tenga métodos para establecerlo y obtenerlo.
 
 int main() {
-    main_1();
+    main_2();
     return 0;
 }
