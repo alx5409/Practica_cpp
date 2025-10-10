@@ -117,6 +117,24 @@ void main_6() {
 }
 
 // Ejercicio 7: Escribe una función template que busque un elemento en un vector y devuelva su posición o -1 si no está.
+template <typename T>
+int buscar_posicion_elemento_vector(std::vector<T> vector, T elemento) {
+    for (int i = 0; i < vector.size(); i++) {
+        if (vector[i] == elemento) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void main_7() {
+    std::vector<int> vector = {4, 3, 2, 7, 6, 5};
+    int valor = 7;
+    int posicion = buscar_posicion_elemento_vector(vector, valor);
+    std::cout << "La posicion del elemento :" << valor << " en el vector ";
+    imprimir_elementos_vector(vector);
+    std::cout << "Es: " << posicion;
+}
 
 // Ejercicio 8: Escribe una función template que reciba dos vectores y devuelva un nuevo vector con los elementos comunes a ambos.
 
@@ -125,6 +143,6 @@ void main_6() {
 // Ejercicio 10: Escribe una clase template llamada Caja que almacene un solo valor y tenga métodos para establecerlo y obtenerlo.
 
 int main() {
-    main_6();
+    main_7();
     return 0;
 }
