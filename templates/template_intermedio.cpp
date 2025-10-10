@@ -40,7 +40,6 @@ void main_1() {
 // Ejercicio 2: Escribe una función template que reciba un vector y un valor, y elimine todas las apariciones de ese valor del vector.
 template <typename T>
 void eliminar_duplicados(std::vector<T>& vector, T valor) {
-    int i = 0;
     vector.erase(
         std::remove(vector.begin(), vector.end(), valor),
         vector.end()
@@ -56,8 +55,31 @@ void main_2() {
 }
 
 // Ejercicio 3: Escribe una función template que reciba un vector y devuelva el elemento más frecuente.
+template <typename T>
+T moda(std::vector<T> vector) {
+    std::map<T, int> diccionario_T_contador;
+    for (int i = 0; i < vector.size(); i++) {
+        diccionario_T_contador[vector[i]] += 1;
+    }
+    int maximo = 0;
+    T clave_maximo;
+    for ( std::pair<T, int> clave_valor : diccionario_T_contador) {
+        if (diccionario_T_contador[clave_valor.first] > maximo) {
+            maximo = diccionario_T_contador[clave_valor.first];
+            clave_maximo = clave_valor.first;
+        }
+    }
+    return clave_maximo;
+}
+
+void main_3() {
+    std::vector<int> vector = {1, 2, 3, 4, 5, 2, 3, 4, 6, 1, 2};
+    int mod = moda(vector);
+    std::cout << "El valor que más se repite es : " << mod << std::endl;
+}
 
 // Ejercicio 4: Escribe una clase template Pila que implemente una pila (stack) básica con métodos push, pop, top y empty.
+
 
 // Ejercicio 5: Escribe una función template que reciba un mapa y devuelva un vector con todas sus claves.
 
@@ -82,6 +104,6 @@ void main_2() {
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_2();
+    main_3();
     return 0;
 }
