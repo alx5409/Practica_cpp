@@ -57,6 +57,27 @@ void main_3() {
 }
 
 // Ejercicio 4: Escribe una clase template llamada Pareja que almacene dos valores de tipos (posiblemente) diferentes y tenga un método para mostrarlos.
+template <typename T>
+class Pareja {
+public:
+    T primero;
+    T segundo;
+    Pareja(T a, T b) : primero(a), segundo(b) {}
+    void mostrar() const {
+        std::cout << "Primer elemento : " << primero << " .Segundo elemento " << segundo << std::endl;
+    }
+};
+
+void main_4() {
+    int valor_1 = 1;
+    int valor_2 = 2;
+    std::string saludo_1 = "Hola ";
+    std::string saludo_2 = "mundo.";
+    Pareja pareja_enteros(valor_1, valor_2);
+    Pareja pareja_strings(saludo_1, saludo_2);
+    pareja_enteros.mostrar();
+    pareja_strings.mostrar();
+}
 
 // Ejercicio 5: Escribe una función template que invierta los elementos de un vector de cualquier tipo.
 
@@ -71,6 +92,6 @@ void main_3() {
 // Ejercicio 10: Escribe una clase template llamada Caja que almacene un solo valor y tenga métodos para establecerlo y obtenerlo.
 
 int main() {
-    main_3();
+    main_4();
     return 0;
 }
