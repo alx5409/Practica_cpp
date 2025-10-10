@@ -450,7 +450,7 @@ void main_23() {
 // 24. Implementa una función que reciba un std::vector y elimine todos los elementos menores que un valor dado.
 void filtrar_valores_inferiores(std::vector<int>& vector_enteros, int valor) {
     vector_enteros.erase(
-        std::remove_if(
+        std::remove_if(             // Usa un iterador como parámetro por eso se tiene que hacer lo siguiente
             vector_enteros.begin(),
             vector_enteros.end(),
             [valor](int x) { return x < valor; }
@@ -468,8 +468,33 @@ void main_24() {
 }
 
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
+class Gestionar_Errores {
+public:
+    int valor;
+    std::string nombre;
+    Gestionar_Errores(int val, std::string name) {
+        if (val < 0) {
+            throw std::invalid_argument("El valor no puede ser negativo");
+        }
+        valor = val;
+        nombre = name;
+    }
+};
+
+void main_25() {
+    std::string nombre;
+    int valor;
+    std::cout << "Dime que nombre y qué valor quieres ponerle al objeto.\n";
+    std::cin >> nombre >> valor;
+    try {
+        Gestionar_Errores gestion(valor, nombre);
+        std::cout << "Objeto creado correctamente.\n";
+    } catch (const std::exception& e) {
+        std::cerr << "Error al crear el objeto: " << e.what() << std::endl;
+    }
+}
 
 int main() {
-    main_24();
+    main_25();
     return 0;
 }
