@@ -448,9 +448,28 @@ void main_23() {
 }
 
 // 24. Implementa una función que reciba un std::vector y elimine todos los elementos menores que un valor dado.
+void filtrar_valores_inferiores(std::vector<int>& vector_enteros, int valor) {
+    vector_enteros.erase(
+        std::remove_if(
+            vector_enteros.begin(),
+            vector_enteros.end(),
+            [valor](int x) { return x < valor; }
+        ),
+        vector_enteros.end()
+    );
+}
+
+void main_24() {
+    int valor = 4;
+    std::vector<int> vector_enteros = { 1, 2, 3, 4, 5, 6, 9};
+    mostrar_vector(vector_enteros);
+    filtrar_valores_inferiores(vector_enteros, valor);
+    mostrar_vector(vector_enteros);
+}
+
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_23();
+    main_24();
     return 0;
 }
