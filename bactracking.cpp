@@ -69,11 +69,11 @@ void main_2() {
 // 3. Subconjuntos de un conjunto
 //    Dado un conjunto de números, genera todos los subconjuntos posibles (el conjunto potencia).
 void mostrar_subconjuntos(std::set<int> conjunto) {
-    for (int i = 0; i < conjunto.size(); i++) {
+    for (int i = 0; i <= conjunto.size(); i++) {
         subconjuntos(conjunto, i);
     }
 }
-int main_3() {
+void main_3() {
     std::set<int> conjunto = {1, 2, 3, 4};
     mostrar_subconjuntos(conjunto);
 }
@@ -261,6 +261,6 @@ void main_5() {
 //     Dado un tablero rectangular, encuentra todas las formas de cubrirlo completamente con fichas de dominó (2x1) sin solapamientos ni huecos.
 
 int main() {
-    main_5();
+    main_3();
     return 0;
 }
