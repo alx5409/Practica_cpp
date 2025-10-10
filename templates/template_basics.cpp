@@ -41,6 +41,20 @@ void main_2() {
 }
 
 // Ejercicio 3: Escribe una función template que imprima los elementos de un vector de cualquier tipo.
+template <typename T>
+void imprimir_elementos_vector(std::vector<T> vector) {
+    for (int i = 0; i < vector.size(); i++) {
+        std::cout << vector[i] << " ";
+    }
+    std::cout << std::endl;
+}
+
+void main_3() {
+    std::vector<int> int_vector = {1, 2, 3, 4, 5};
+    std::vector<std::string> string_vector = {"hola", "que", "tal", "?"};
+    imprimir_elementos_vector(int_vector);
+    imprimir_elementos_vector(string_vector);
+}
 
 // Ejercicio 4: Escribe una clase template llamada Pareja que almacene dos valores de tipos (posiblemente) diferentes y tenga un método para mostrarlos.
 
@@ -57,6 +71,6 @@ void main_2() {
 // Ejercicio 10: Escribe una clase template llamada Caja que almacene un solo valor y tenga métodos para establecerlo y obtenerlo.
 
 int main() {
-    main_2();
+    main_3();
     return 0;
 }
