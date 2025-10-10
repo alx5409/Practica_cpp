@@ -164,10 +164,25 @@ void main_8() {
 }
 
 // Ejercicio 9: Escribe una función template que reciba un valor y un número n, y devuelva un vector con n copias de ese valor.
+template <typename T>
+std::vector<T> n_plicar(T valor, int n) {
+    std::vector<T> vector_copias;
+    for (int i = 0; i < n; i++) {
+        vector_copias.push_back(valor);
+    }
+    return vector_copias;
+}
+
+void main_9() {
+    int valor = 1;
+    int dimension = 6;
+    std::vector<int> vector = n_plicar(valor, dimension);
+    imprimir_elementos_vector(vector);
+}
 
 // Ejercicio 10: Escribe una clase template llamada Caja que almacene un solo valor y tenga métodos para establecerlo y obtenerlo.
 
 int main() {
-    main_8();
+    main_9();
     return 0;
 }
