@@ -6,6 +6,31 @@
 #include <set>
 
 // Ejercicio 1: Escribe una función template que reciba dos vectores y devuelva un vector con la unión de ambos (sin duplicados).
+template <typename T>
+std::vector<T> unir_vectores(std::vector<T> vector_1, std::vector<T> vector_2) {
+    std::set<T> elementos_sin_duplicados;
+    std::vector<T> vector_union;
+    for (int i = 0; i < vector_1.size(); i++) {
+        elementos_sin_duplicados.insert(vector_1[i]);
+    }
+    for (int i = 0; i < vector_2.size(); i++) {
+        elementos_sin_duplicados.insert(vector_2[i]);
+    }
+    for (T elemento : elementos_sin_duplicados) {
+        vector_union.push_back(elemento);
+    }
+    return vector_union;
+}
+
+void main_1() {
+    std::vector<int> vector_1 = {1, 2, 3, 4};
+    std::vector<int> vector_2 = {4, 6, 2, 9};
+    std::vector<int> vector_union = unir_vectores(vector_1, vector_2);
+    for (int i = 0; i < vector_union.size(); i++) {
+        std::cout << vector_union[i] << " ";
+    }
+    std::cout << std::endl;
+}
 
 // Ejercicio 2: Escribe una función template que reciba un vector y un valor, y elimine todas las apariciones de ese valor del vector.
 
@@ -36,5 +61,6 @@
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
+    main_1();
     return 0;
 }
