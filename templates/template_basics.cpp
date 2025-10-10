@@ -80,6 +80,23 @@ void main_4() {
 }
 
 // Ejercicio 5: Escribe una función template que invierta los elementos de un vector de cualquier tipo.
+template <typename T>
+void invertir_vector(std::vector<T>& vector) {
+    T temp;
+    int size = vector.size();
+    for (int i = 0; i < size/2; i++) {
+        temp = vector[i];
+        vector[i] = vector[size - 1 - i];
+        vector[size - 1 - i] = temp;
+    }
+}
+
+void main_5() {
+    std::vector<int> vector = {1, 2, 3, 4, 5};
+    imprimir_elementos_vector(vector);
+    invertir_vector(vector);
+    imprimir_elementos_vector(vector);
+}
 
 // Ejercicio 6: Escribe una función template que calcule la suma de los elementos de un vector de cualquier tipo numérico.
 
@@ -92,6 +109,6 @@ void main_4() {
 // Ejercicio 10: Escribe una clase template llamada Caja que almacene un solo valor y tenga métodos para establecerlo y obtenerlo.
 
 int main() {
-    main_4();
+    main_5();
     return 0;
 }
