@@ -342,15 +342,159 @@ void main_17() {
     comprobar_vector_vacio(vector_no_vacio);
 }
 // 18. Crea una clase con atributos privados y métodos públicos para acceder y modificar esos atributos.
+class Publico_y_privado {
+    int numero_privado;
+    std::string cadena_privada;
+
+    void imprime_cadena_y_numero_privado() {
+        std::cout << "El número privado es: " << numero_privado << std::endl;
+        std::cout << "La cadena privada es: " << cadena_privada << std::endl;
+    }
+
+public:
+    int numero_publico;
+    std::string cadena_publica;
+
+    // Constructor de la clase, siempre es publico
+    Publico_y_privado(int numero, std::string cadena) {
+        numero_publico = numero;
+        cadena_publica = cadena;
+
+        numero_privado = numero_publico - 1;
+        cadena_privada = quitar_espacios(cadena_publica);
+    }
+
+    void imprime_cadena_y_numero_publico() {
+    std::cout << "El número publico es: " << numero_publico << std::endl;
+    std::cout << "La cadena publica es: " << cadena_publica << std::endl;
+    }
+};
+
+void main_18() {
+    int numero = 3;
+    std::string cadena = "Hola, qué tal?";
+    Publico_y_privado publico_privado(numero, cadena);
+    publico_privado.imprime_cadena_y_numero_publico();
+}
+
 // 19. Implementa una función que reciba un puntero constante a int y muestre su valor.
+void mostrar_contenido_puntero(const int *p_int) {
+    std::cout << "El valor de la variable a la que apunta el puntero es: " << *p_int << std::endl;
+}
+
+void main_19() {
+    int numero = 5;
+    int *p_int = &numero;
+    mostrar_contenido_puntero(p_int);
+}
+
 // 20. Crea una función que reciba un std::vector de punteros y libere su memoria.
+void liberar_memoria_punteros(std::vector<int*>& p_vectors) {
+    for (int i = 0; i < p_vectors.size(); i++) {
+        delete(p_vectors[i]);
+    }
+    std::cout << "Se ha liberado la memoria con exito.\n";
+}
+
+void main_20() {
+    std::vector<int> int_vector = {5, 4, 3, 2, 1, 0};
+    std::vector<int*> p_int_vector;
+
+    for (int i = 0; i < int_vector.size(); i++) {
+        int *p_int = new int(int_vector[i]);
+        p_int_vector.push_back(p_int); 
+    }
+    
+    liberar_memoria_punteros(p_int_vector);
+}
+
 // 21. Usa std::find para buscar un elemento en un vector y mostrar su posición.
+void main_21() {
+    std::vector<int> int_vector = {5, 4, 3, 2, 1};
+    int posicion;
+    int valor = 2;
+    auto it = std::find(int_vector.begin(), int_vector.end(), valor);
+    if (it != int_vector.end()) {
+        int posicion = std::distance(int_vector.begin(), it);
+        std::cout << "Posición: " << posicion << std::endl;
+    } else {
+        std::cout << "No encontrado" << std::endl;
+    }
+}
+
 // 22. Implementa una función que reciba un std::vector y lo ordene en orden descendente.
+void vector_ordenado_descendiente(std::vector<int>& int_vector) {
+std::sort(int_vector.begin(), int_vector.end(), std::greater<int>());
+}
+
+void main_22() {
+    std::vector<int> vector_enteros = {5, 4, 3, 2, 6, 3, 1};
+    mostrar_vector(vector_enteros);
+    vector_ordenado_descendiente(vector_enteros);
+    mostrar_vector(vector_enteros);
+}
+
 // 23. Crea una función que reciba un std::map y muestre todas sus claves y valores.
+void mostrar_claves_y_valores(std::map<std::string, int> diccionario) {
+    std::cout << "Las claves y los valores son los siguiente.\n";
+    for (std::pair<std::string, int> clave_valor : diccionario) {
+        std::cout << "Clave: " << clave_valor.first << " Valor: " << clave_valor.second << std::endl;
+    }
+}
+
+void main_23() {
+    std::map<std::string, int> diccionario = {{"Uno", 1}, {"Dos", 2}, {"Tres", 3}};
+    mostrar_claves_y_valores(diccionario);
+}
+
 // 24. Implementa una función que reciba un std::vector y elimine todos los elementos menores que un valor dado.
+void filtrar_valores_inferiores(std::vector<int>& vector_enteros, int valor) {
+    vector_enteros.erase(
+        std::remove_if(             // Usa un iterador como parámetro por eso se tiene que hacer lo siguiente
+            vector_enteros.begin(),
+            vector_enteros.end(),
+            [valor](int x) { return x < valor; }
+        ),
+        vector_enteros.end()
+    );
+}
+
+void main_24() {
+    int valor = 4;
+    std::vector<int> vector_enteros = { 1, 2, 3, 4, 5, 6, 9};
+    mostrar_vector(vector_enteros);
+    filtrar_valores_inferiores(vector_enteros, valor);
+    mostrar_vector(vector_enteros);
+}
+
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
+class Gestionar_Errores {
+public:
+    int valor;
+    std::string nombre;
+    Gestionar_Errores(int val, std::string name) {
+        if (val < 0) {
+            throw std::invalid_argument("El valor no puede ser negativo");
+        }
+        valor = val;
+        nombre = name;
+    }
+};
+
+void main_25() {
+    std::string nombre;
+    int valor;
+    std::cout << "Dime que nombre y qué valor quieres ponerle al objeto.\n";
+    std::cin >> nombre >> valor;
+    try {
+        Gestionar_Errores gestion(valor, nombre);
+        std::cout << "Objeto creado correctamente.\n";
+    } catch (const std::exception& e) {
+        std::cerr << "Error al crear el objeto: " << e.what() << std::endl;
+    }
+}
 
 int main() {
-    main_17();
+    main_25();
     return 0;
 }
