@@ -99,6 +99,22 @@ void main_5() {
 }
 
 // Ejercicio 6: Escribe una función template que calcule la suma de los elementos de un vector de cualquier tipo numérico.
+template <typename T>
+T suma_total(std::vector<T> vector) {
+    T suma = 0;
+    for (int i = 0; i < vector.size(); i++) {
+        suma += vector[i];
+    }
+    return suma;
+}
+
+void main_6() {
+    std::vector<int> vector_enteros = {1, 2, 3, 4, 5, 6};
+    int suma = suma_total(vector_enteros);
+    std::cout << "La suma total del vector ";
+    imprimir_elementos_vector(vector_enteros);
+    std::cout << " es " << suma << std::endl;
+}
 
 // Ejercicio 7: Escribe una función template que busque un elemento en un vector y devuelva su posición o -1 si no está.
 
@@ -109,6 +125,6 @@ void main_5() {
 // Ejercicio 10: Escribe una clase template llamada Caja que almacene un solo valor y tenga métodos para establecerlo y obtenerlo.
 
 int main() {
-    main_5();
+    main_6();
     return 0;
 }
