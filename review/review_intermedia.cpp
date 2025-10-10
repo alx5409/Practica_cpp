@@ -435,10 +435,22 @@ void main_22() {
 }
 
 // 23. Crea una función que reciba un std::map y muestre todas sus claves y valores.
+void mostrar_claves_y_valores(std::map<std::string, int> diccionario) {
+    std::cout << "Las claves y los valores son los siguiente.\n";
+    for (std::pair<std::string, int> clave_valor : diccionario) {
+        std::cout << "Clave: " << clave_valor.first << " Valor: " << clave_valor.second << std::endl;
+    }
+}
+
+void main_23() {
+    std::map<std::string, int> diccionario = {{"Uno", 1}, {"Dos", 2}, {"Tres", 3}};
+    mostrar_claves_y_valores(diccionario);
+}
+
 // 24. Implementa una función que reciba un std::vector y elimine todos los elementos menores que un valor dado.
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_22();
+    main_23();
     return 0;
 }
