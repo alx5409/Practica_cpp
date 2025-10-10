@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <set>
 #include <string>
 #include <algorithm>
 
@@ -137,12 +138,36 @@ void main_7() {
 }
 
 // Ejercicio 8: Escribe una función template que reciba dos vectores y devuelva un nuevo vector con los elementos comunes a ambos.
+template <typename T>
+std::vector<T> elementos_comunes(std::vector<T> vector_1, std::vector<T> vector_2) {
+    std::vector<T> vector_coincidencias;
+    std::set<T> coincidencias_sin_repeticion;
+    for (int i = 0; i < vector_1.size(); i++) {
+        for (int j = 0; j < vector_2.size(); j++) {
+            if (vector_1[i] == vector_2[j]) {
+                coincidencias_sin_repeticion.insert(vector_1[i]);
+                continue;
+            }
+        }
+    }
+    for (T elemento : coincidencias_sin_repeticion) {
+        vector_coincidencias.push_back(elemento);
+    }
+    return vector_coincidencias;
+}
+
+void main_8() {
+    std::vector<int> v1 = {1, 2, 3, 4};
+    std::vector<int> v2 = {3, 4, 5, 6};
+    std::vector<int> coincidencias = elementos_comunes(v1, v2);
+    imprimir_elementos_vector(coincidencias);
+}
 
 // Ejercicio 9: Escribe una función template que reciba un valor y un número n, y devuelva un vector con n copias de ese valor.
 
 // Ejercicio 10: Escribe una clase template llamada Caja que almacene un solo valor y tenga métodos para establecerlo y obtenerlo.
 
 int main() {
-    main_7();
+    main_8();
     return 0;
 }
