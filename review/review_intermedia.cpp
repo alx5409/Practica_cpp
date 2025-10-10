@@ -423,11 +423,22 @@ void main_21() {
 }
 
 // 22. Implementa una función que reciba un std::vector y lo ordene en orden descendente.
+void vector_ordenado_descendiente(std::vector<int>& int_vector) {
+std::sort(int_vector.begin(), int_vector.end(), std::greater<int>());
+}
+
+void main_22() {
+    std::vector<int> vector_enteros = {5, 4, 3, 2, 6, 3, 1};
+    mostrar_vector(vector_enteros);
+    vector_ordenado_descendiente(vector_enteros);
+    mostrar_vector(vector_enteros);
+}
+
 // 23. Crea una función que reciba un std::map y muestre todas sus claves y valores.
 // 24. Implementa una función que reciba un std::vector y elimine todos los elementos menores que un valor dado.
 // 25. Crea una clase que gestione errores usando try-catch en sus métodos.
 
 int main() {
-    main_21();
+    main_22();
     return 0;
 }
