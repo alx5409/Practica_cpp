@@ -2,6 +2,7 @@
 #include <iostream>
 #include <set>
 #include <vector>
+#include <map>
 
 // 1. Generar todas las combinaciones de un conjunto
 //    Dado un conjunto de números, genera todas las combinaciones posibles de tamaño k.
@@ -68,11 +69,11 @@ void main_2() {
 // 3. Subconjuntos de un conjunto
 //    Dado un conjunto de números, genera todos los subconjuntos posibles (el conjunto potencia).
 void mostrar_subconjuntos(std::set<int> conjunto) {
-    for (int i = 0; i < conjunto.size(); i++) {
+    for (int i = 0; i <= conjunto.size(); i++) {
         subconjuntos(conjunto, i);
     }
 }
-int main_3() {
+void main_3() {
     std::set<int> conjunto = {1, 2, 3, 4};
     mostrar_subconjuntos(conjunto);
 }
@@ -85,22 +86,135 @@ public:
     std::vector<std::vector<int>> casillas;
     Tablero(int dim) {
         dimension = dim;
+        casillas = std::vector<std::vector<int>>(dim, std::vector<int>(dim, 0));    // inicializa todas las casillas a 0
+    }
+    bool es_valido(int fila, int columna) {
+        /*
+        Comprueba si es valido poner la dama en esa posicion: que no haya dama en la misma columna,
+        ni en las diagonales.
+        */
+       // Comprueba que los números están dentro del tablero
+       if (fila < 0 || fila >= dimension || columna < 0 || columna >= dimension){
+        return false;
+       }
+       // Comprueba que la fila está libre
         for (int i = 0; i < dimension; i++) {
-            for( int j = 0; j < dimension; j++) {
-                casillas[i][j] = 0;
+            if (casillas[fila][i] == 1) {
+                return false;
             }
         }
+        // Comprueba que la columna está libre
+        for (int i = 0; i < dimension; i++) {
+            if (casillas[i][columna] == 1) {
+                return false;
+            }
+        }
+        // Comprueba la diagonal principal ↖ (arriba a la izquierda)
+        for (int i = fila - 1, j = columna - 1; i >= 0 && j >= 0; i--, j--) {
+            if (casillas[i][j] == 1) {
+                return false;
+            }
+        }
+        // Comprueba la diagonal secundaria ↗ (arriba a la derecha)
+        for (int i = fila - 1, j = columna + 1; i >= 0 && j < dimension; i--, j++) {
+            if (casillas[i][j] == 1) {
+                return false;
+            }
+        }
+        // Comprueba la diagonal principal ↘ (abajo a la derecha)
+        for (int i = fila + 1, j = columna + 1; i < dimension && j < dimension; i++, j++) {
+            if (casillas[i][j] == 1) {
+                return false;
+            }
+        }
+        // Comprueba la diagonal secundaria ↙ (abajo a la izquierda)
+        for (int i = fila + 1, j = columna - 1; i < dimension && j >= 0; i++, j--) {
+            if (casillas[i][j] == 1) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void colocar_reina(int fila, int columna) {
+        if (!(es_valido(fila, columna))){
+            printf("Movimiento no valido.\n");
+            return;
+        }
+        casillas[fila][columna] = 1;
+    }
+
+    int contar_puntuacion_tablero() {
+        int suma = 0;
+        for (int i = 0; i < dimension; i++) {
+            for (int j = 0; j < dimension; j++) {
+                if (casillas[i][j] == 1) {
+                    suma++;
+                    continue;
+                }
+            }
+        }
+        return suma;
+    }
+
+    void revolver_N_damas() {
+        int puntuacion;
+        for(int fila = 0; fila < dimension; fila++) {
+            for(int columna = 0; columna < dimension; columna++) {
+                if (!(es_valido(fila, columna))) {
+                    continue;
+                }
+                colocar_reina(fila, columna);
+            }
+        }
+    }
+
+    void mostrar_tablero() {
+        int puntuacion;
+        for (int fila = 0; fila < dimension; fila ++) {
+            for (int columna = 0; columna < dimension; columna++) {
+                std::cout << casillas[fila][columna] << " ";
+            }
+            std::cout << std::endl;
+        }
+        puntuacion = contar_puntuacion_tablero();
+        std::cout << "\n\nLa puntuacion es : " << puntuacion << std::endl;
     }
 };
 
 void main_4() {
-    Tablero tablero(8);
-    
+    int dimension = 8;
+    Tablero tablero(dimension);
+    tablero.revolver_N_damas();
+    tablero.mostrar_tablero();
 }
 
 // 5. Sumas objetivo (Subset Sum)
 //    Dado un conjunto de números y un objetivo, encuentra todos los subconjuntos cuya suma sea igual al objetivo.
+void hallar_subconjunto_suma(std::set<int> subconjunto, int suma) {
+}
 
+void mostrar_contenido_vector(std::vector<int> int_vector) {
+    std::cout << "[ ";
+    for (int i = 0; i < int_vector.size(); i++) {
+        std::cout << int_vector[i] << " ";
+    }
+    std::cout << "]\n";
+}
+void mostrar_todos_subconjuntos_por_suma(std::set<int> conjunto, int suma) {
+    // std::map<int, std::vector<int>> diccionario_sumas;
+    std::vector<int> posibles_elementos;
+    for (int elementos : conjunto) {
+        posibles_elementos.push_back(elementos);
+    }
+    mostrar_contenido_vector(posibles_elementos);
+}
+
+void main_5() {
+    std::set<int> conjunto_enteros = {4, 3, 6, 2, 1};
+    int suma_objetivo = 10;
+    mostrar_todos_subconjuntos_por_suma(conjunto_enteros, suma_objetivo);
+}
 // 6. Labyrinth/maze solver
 //    Dado un laberinto representado como una matriz, encuentra un camino desde la entrada hasta la salida.
 
@@ -115,6 +229,36 @@ void main_4() {
 
 // 10. Resolver el problema del viajante (Traveling Salesman Problem, TSP) por fuerza bruta
 //     Dada una lista de ciudades y las distancias entre ellas, encuentra el camino más corto que visita cada ciudad exactamente una vez y regresa al punto de inicio.
+
+// 11. Generar todas las secuencias binarias de longitud n
+//     Dado un número n, genera todas las secuencias posibles de 0s y 1s de longitud n.
+
+// 12. Generar todas las particiones de un número
+//     Dado un número n, genera todas las formas posibles de escribir n como suma de números positivos.
+
+// 13. Generar todas las combinaciones de paréntesis válidos
+//     Dado n pares de paréntesis, genera todas las combinaciones válidas.
+
+// 14. Generar todas las permutaciones únicas de un vector con elementos repetidos
+//     Dado un vector con elementos repetidos, genera todas las permutaciones únicas (sin duplicados).
+
+// 15. Generar todas las formas de colocar k caballos en un tablero NxN sin que se ataquen
+//     Dado un tablero NxN y k caballos, genera todas las formas de colocarlos sin que se ataquen entre sí.
+
+// 16. Encontrar todas las formas de sumar monedas para un valor dado
+//     Dadas monedas de ciertos valores y un objetivo, encuentra todas las combinaciones de monedas que suman ese objetivo.
+
+// 17. Resolver el problema de las palabras cruzadas (Crossword Puzzle)
+//     Dado un tablero y una lista de palabras, encuentra todas las formas de colocar las palabras en el tablero respetando las reglas.
+
+// 18. Encontrar todas las formas de dividir un string en palabras válidas (Word Break)
+//     Dada una cadena y un diccionario, encuentra todas las formas de segmentar la cadena en palabras del diccionario.
+
+// 19. Resolver el problema de los números mágicos (Magic Square)
+//     Genera todos los cuadrados mágicos de tamaño NxN (todas las filas, columnas y diagonales suman lo mismo).
+
+// 20. Encontrar todas las formas de cubrir un tablero con fichas de dominó
+//     Dado un tablero rectangular, encuentra todas las formas de cubrirlo completamente con fichas de dominó (2x1) sin solapamientos ni huecos.
 
 int main() {
     main_3();
