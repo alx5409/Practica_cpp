@@ -181,8 +181,28 @@ void main_9() {
 }
 
 // Ejercicio 10: Escribe una clase template llamada Caja que almacene un solo valor y tenga métodos para establecerlo y obtenerlo.
+template <typename T>
+class Caja {
+public:
+    T valor;
+    Caja(T a): valor(a) {};
+    void cambiar_valor(T a) {
+        valor = a;
+    }
+    T obtener_valor() {
+        std::cout << valor << std::endl;
+        return valor;
+    }
+};
+
+void main_10(){
+    Caja<int> caja(3);
+    Caja<std::string> caja_string("Hola");
+    std::cout << caja.obtener_valor() << std::endl;
+    std::cout << caja_string.obtener_valor() << std::endl;
+}
 
 int main() {
-    main_9();
+    main_10();
     return 0;
 }
