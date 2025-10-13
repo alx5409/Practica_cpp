@@ -186,6 +186,31 @@ void aplicar_sigmoide_a_vector(std::vector<T>& vector) {
 }
 
 // Ejercicio 10: Escribe una función template que realice una regresión lineal simple (y = ax + b) dados dos vectores de datos.
+template <typename T>
+std::pair<T, T> linear_regression(const std::vector<T> x, const std::vector<T> y) {
+    // Usando la fórmula de la solución de mínimos cuadrados:
+    // a = (n * Σ(x_i * y_i) - Σx_i * Σy_i) / (n * Σ(x_i^2) - (Σx_i)^2)
+    // b = (Σy_i - a * Σx_i) / n
+    T suma_x = 0;
+    T suma_y = 0;
+    T suma_productos = 0;
+    T suma_x_cuadrado = 0;
+    T a;
+    T b;
+    if (x.size() != y.size()) {
+        throw std::invalid_argument("Los vectores no tienen la misma dimension.\n");
+    }
+    int n = x.size();
+    for (int i = 0; i < n; i++) {
+        suma_x += x[i];
+        suma_y += y[i];
+        suma_productos += (x[i] * y[i]);
+        suma_x_cuadrado += (x[i] * x[i]);
+    }
+    a = (n * suma_productos - suma_x * suma_y) / (n * suma_x_cuadrado - pow(suma_x, 2));
+    b = (suma_y - a * suma_x) / n;
+    return {a, b};
+}
 
 // Ejercicio 11: Escribe una función template que calcule la matriz de covarianza de un conjunto de vectores.
 
