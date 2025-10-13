@@ -309,9 +309,10 @@ T derivada_funcion_cuadratica_general(T x, T a = 1, T b = 1) {
 }
 
 template <typename T, typename Func>
-T gradient_descent(float tasa_aprendizaje, int numero_iteraciones = 100,
+T gradient_descent(float tasa_aprendizaje, int numero_iteraciones = 100, float epsilon = 1e-4,
     T valor_inicial = 0, Func funcion = derivada_funcion_cuadratica_general) {
-
+        
+        while ()
 }
 // Ejercicio 15: Escribe una función template que calcule la función softmax sobre un vector.
 template <typename T>
