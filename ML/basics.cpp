@@ -213,6 +213,62 @@ std::pair<T, T> linear_regression(const std::vector<T> x, const std::vector<T> y
 }
 
 // Ejercicio 11: Escribe una función template que calcule la matriz de covarianza de un conjunto de vectores.
+template <typename T>
+T covarianza(std::vector<T> x, std::vector<T> y) {
+    if (x.size() != y.size()) {
+        throw std::invalid_argument("Los vectores no tienen el mismo tamaño.\n");
+    }
+
+    T media_x = 0;
+    T media_y = 0;
+    int n = x.size()
+    T cov = 0;
+
+    for (int i = 0; i < n; i++) {
+        media_x += x[i];
+        media_y += y[i];
+    }
+    media_x /= n;
+    media_y /= n;
+
+    for (int i = 0; i < n; i++) {
+        cov += (x[i] - media_x) * (y[i] - media_y);
+    }
+    cov /= n;
+    return cov;
+}
+
+template <typename T>
+std::vector<std::vector<T>> calcular_matriz_covarianza(const std::vector<std::vector<T>>& datos) {
+    // datos: m x n (m observaciones, n variables)
+    int m = datos.size();
+    if (m == 0) return {};
+    int n = datos[0].size();
+
+    // Comprobar que todas las filas tienen el mismo tamaño
+    for (const auto& fila : datos) {
+        if (fila.size() != n) {
+            throw std::invalid_argument("Todas las filas deben tener el mismo tamaño.");
+        }
+    }
+
+    // Extraer columnas para el calculo de la covarianza
+    std::vector<std::vector<T>> columnas(n, std::vector<T>(m));
+    for (int col = 0; col < n; col++) {
+        for (int fila = 0; fila < m; fila++) {
+            columnas[col][fila] = datos[fila][col];
+        }
+    }
+
+    // Calcular matriz de covarianza (n x n): se calcula con las columnas
+    std::vector<std::vector<T>> matriz(n, std::vector<T>(n, 0));
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            matriz[i][j] = covarianza(columnas[i], columnas[j]);
+        }
+    }
+    return matriz;
+}
 
 // Ejercicio 12: Escribe una función template que encuentre el valor máximo y su posición en un vector.
 template <typename T>
