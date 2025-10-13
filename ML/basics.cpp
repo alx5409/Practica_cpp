@@ -159,7 +159,20 @@ std::pair<T, T> media_y_varianza(std::vector<T> vector) {
     var /= n;
     return {mean, var};
 }
+
 // Ejercicio 8: Escribe una función template que calcule la distancia euclídea entre dos vectores.
+template <typename T>
+float distancia_euclidea_entre_vectores(std::vector<T> vector_1, std::vector<T> vector_2) {
+    float distancia = 0;
+    if (vector_1.size() != vector_2.size()) {
+        throw std::invalid_argument("Los vectores no tienen la misma dimension.\n");
+    }
+    for (int i = 0; i < vector_1.size(); i++) {
+        distancia += pow(vector_1[i] - vector_2[i], 2);
+    }
+    distancia = pow(distancia, 0.5);
+    return distancia;
+}
 
 // Ejercicio 9: Escribe una función template que aplique la función sigmoide a todos los elementos de un vector.
 
