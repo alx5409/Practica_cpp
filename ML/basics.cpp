@@ -309,11 +309,32 @@ T derivada_funcion_cuadratica_general(T x, T a = 1, T b = 1) {
 }
 
 template <typename T, typename Func>
-T gradient_descent(float tasa_aprendizaje, int numero_iteraciones = 100, float epsilon = 1e-4,
-    T valor_inicial = 0, Func funcion = derivada_funcion_cuadratica_general) {
-        
-        while ()
+T cuadratic_gradient_descent(T tasa_aprendizaje, int numero_iteraciones = 100, T epsilon = 1e-4,
+    T valor_inicial = 0) {
+        // Manejamos execpciones al principio
+        if (numero_iteraciones <= 0) {
+            throw std::invalid_argument("El número de iteracionas máximo no puede ser menor o igual que 0.\n");
+            return;
+        }
+        if (epsilon <= 0) {
+            throw std::invalid_argument("El error máximo no puede ser menor o igual que 0.\n");
+        }
+        if (tasa_aprendizaje <= 0) {
+            throw std::invalid_argument("La tasa de aprendizaje tiene que ser positiva.\n");
+        }
+
+
+        int n_iter = 0;
+        T valor = valor_inicial;
+        T error = abs(funcion_cuadratica_general(valor_inicial));
+        while (n_iter < numero_iteraciones && error >= epsilon) {
+            valor -= tasa_aprendizaje * derivada_funcion_cuadratica_general(valor);
+            error = abs(funcion_cuadratica_general(valor));
+            n_iter++;
+        }
+        return valor;
 }
+
 // Ejercicio 15: Escribe una función template que calcule la función softmax sobre un vector.
 template <typename T>
 std::vector<T> softmax(std::vector<T> vector) {
