@@ -215,7 +215,18 @@ std::pair<T, T> linear_regression(const std::vector<T> x, const std::vector<T> y
 // Ejercicio 11: Escribe una función template que calcule la matriz de covarianza de un conjunto de vectores.
 
 // Ejercicio 12: Escribe una función template que encuentre el valor máximo y su posición en un vector.
-
+template <typename T>
+std::pair<T, int> maximo_en_vector(std::vector<T> vector) {
+    int posicion = 0;
+    T max = vector[posicion];
+    for (int i = 0; i < vector.size(); i++) {
+        if (max < vector[i]) {
+            posicion = i;
+            max = vector[posicion];
+        }
+    }
+    return {max, posicion};
+}
 // Ejercicio 13: Escribe una función template que realice el producto de una matriz por un vector.
 
 // Ejercicio 14: Escribe una función template que implemente el descenso de gradiente para minimizar una función cuadrática.
