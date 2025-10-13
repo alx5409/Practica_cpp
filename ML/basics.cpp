@@ -227,7 +227,19 @@ std::pair<T, int> maximo_en_vector(std::vector<T> vector) {
     }
     return {max, posicion};
 }
+
 // Ejercicio 13: Escribe una función template que realice el producto de una matriz por un vector.
+template<typename T>
+std::vector<T> producto_matriz_vector(std::vector<std::vector<T>> matriz, std::vector<T> vector) {
+    std::vector<T> producto;
+    if (matriz[0].size() != vector.size()) {
+        throw std::invalid_argument("La matriz no tiene las mismas columnas que la dimension del vector.\n");
+    }
+    for (int i = 0; i < matriz.size(); i++) {
+        producto.push_back(producto_escalar(matriz[i], vector));
+    }
+    return producto;
+}
 
 // Ejercicio 14: Escribe una función template que implemente el descenso de gradiente para minimizar una función cuadrática.
 
