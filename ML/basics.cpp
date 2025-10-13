@@ -82,34 +82,30 @@ public:
         int n = elementos.size();
         comprobar_matriz_cuadrada(elementos);
         dim = n;
-        for (int fila = 0; fila < dim; fila++) {
-            for (int columna = 0; columna < dim; columna++) {
-                entrada[fila][columna] = elementos[fila][columna];
-            }
-        }
+        entrada = elementos;
     }
 
-    void sumar(std::vector<std::vector<T>> matriz) {
-        int n = matriz.size(n);
+    void sumar(const std::vector<std::vector<T>>& matriz) {
+        int n = matriz.size();
         if (n != dim) {
             throw std::invalid_argument("La matriz no tiene la misma dimension.\n");
         }
         comprobar_matriz_cuadrada(matriz);
-        
-        for (int fila = 0; fila < dim; i++) {
+
+        for (int fila = 0; fila < dim; fila++) {
             for (int columna = 0; columna < dim; columna++) {
                 entrada[fila][columna] += matriz[fila][columna];
             }
         }
     }
 
-    void multiplicar(std::vector<std::vector<T>> matriz){
-        int n = matriz.size(n);
+    void multiplicar(const std::vector<std::vector<T>>& matriz){
+        int n = matriz.size();
         if (n != dim) {
             throw std::invalid_argument("La matriz no tiene la misma dimension.\n");
         }
         comprobar_matriz_cuadrada(matriz);
-        
+
         std::vector<std::vector<T>> resultado(dim, std::vector<T>(dim, 0));
         for (int fila = 0; fila < dim; fila++) {
             for (int columna = 0; columna < dim; columna++) {
