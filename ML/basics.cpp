@@ -244,6 +244,18 @@ std::vector<T> producto_matriz_vector(std::vector<std::vector<T>> matriz, std::v
 // Ejercicio 14: Escribe una función template que implemente el descenso de gradiente para minimizar una función cuadrática.
 
 // Ejercicio 15: Escribe una función template que calcule la función softmax sobre un vector.
+template <typename T>
+std::vector<T> softmax(std::vector<T> vector) {
+    std::vector<T> resultado;
+    T suma = 0;
+    for (int i = 0; i < vector.size(); i++) {
+        suma += exp(vector[i]);
+    }
+    for (int i = 0; i < vector.size(); i++) {
+        resultado.push_back(exp(vector[i])/suma);
+    }
+    return resultado;
+}
 
 // Ejercicio 16: Escribe una función template que calcule la entropía cruzada (cross-entropy) entre dos vectores de probabilidades.
 
