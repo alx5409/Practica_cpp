@@ -57,7 +57,7 @@ void transponer_matriz_cuadrada(std::vector<std::vector<T>>& matriz) {
     comprobar_matriz_cuadrada(matriz);
     // La matriz es un vector de vectores fila, ahora haremos que cada fila sea una columna
     for (int fila = 0; fila < n; fila++) {
-        for (int columna = 0; columna < n; columna++){
+        for (int columna = fila + 1; columna < n; columna++){   // Recorre solo la matriz triangular superior
             T temp = matriz[fila][columna];
             matriz[fila][columna] = matriz[columna][fila];
             matriz[columna][fila] = temp;
