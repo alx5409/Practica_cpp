@@ -351,11 +351,33 @@ std::vector<T> softmax(std::vector<T> vector) {
 
 // Ejercicio 16: Escribe una función template que calcule la entropía cruzada (cross-entropy) entre dos vectores de probabilidades.
 
+template <typename T>
+bool comprobar_vector_probabilidad(std::vector<T> vector) {
+    T suma = 0;
+    for (int i = 0; i < vector.size(); i++) {
+        suma += vector[i];
+    }
+    if (std::abs(suma - 1) < 1e-6) {
+        return  true; 
+    }
+    return false;
+}
+template <typename T>
+T entropia_cruzada(std::vector<T> vector_probabilidad_1, std::vector<T> vector_probabilidad_2) {
+    // Comprueba que los dos vectores que introduce suman 1
+    if (!(comprobar_vector_probabilidad(vector_probabilidad_1)&&comprobar_vector_probabilidad(vector_probabilidad_2))) {
+        throw std::invalid_argument("Los vectores introducidos no son de probabilidad, no suman 1.\n");
+    }
+    if (vector_probabilidad_1.size() != vector_probabilidad_2.size()) {
+        throw std::invalid_argument("Los vectores no son de la misma dimensión.\n");
+    }
+
+    T entropia = 0;
+    for (int i = 0; i < vector_probabilidad_1.size(); i++) {
+        entropia -= vector_probabilidad_1[i] * log(vector_probabilidad_2[i]);
+    }
+    return entropia;
+}
 int main() {
-    std::vector<int> vector ={1, 2, 3};
-    mostrar_vector(vector);
-    auto cuadrado = [](int x) { return x * x; };
-    aplicar_funcion_a_vector(vector, cuadrado);
-    mostrar_vector(vector);
     return 0;
 }
