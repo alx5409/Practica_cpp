@@ -175,6 +175,15 @@ float distancia_euclidea_entre_vectores(std::vector<T> vector_1, std::vector<T> 
 }
 
 // Ejercicio 9: Escribe una función template que aplique la función sigmoide a todos los elementos de un vector.
+template <typename T>
+T sigmoide(const T x) {
+    return 1/(1 + std::exp(-x));
+}
+
+template <typename T>
+void aplicar_sigmoide_a_vector(std::vector<T>& vector) {
+    aplicar_funcion_a_vector(vector, sigmoide);
+}
 
 // Ejercicio 10: Escribe una función template que realice una regresión lineal simple (y = ax + b) dados dos vectores de datos.
 
