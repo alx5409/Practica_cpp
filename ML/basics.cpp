@@ -298,7 +298,21 @@ std::vector<T> producto_matriz_vector(std::vector<std::vector<T>> matriz, std::v
 }
 
 // Ejercicio 14: Escribe una función template que implemente el descenso de gradiente para minimizar una función cuadrática.
+template <typename T>
+T funcion_cuadratica_general(T x, T a = 1, T b = 1, T c = 1) {
+    return a * pow(x, 2) + b * x + c;
+}
 
+template <typename T>
+T derivada_funcion_cuadratica_general(T x, T a = 1, T b = 1) {
+    return 2 * a * x + b;
+}
+
+template <typename T, typename Func>
+T gradient_descent(float tasa_aprendizaje, int numero_iteraciones = 100,
+    T valor_inicial = 0, Func funcion = derivada_funcion_cuadratica_general) {
+
+}
 // Ejercicio 15: Escribe una función template que calcule la función softmax sobre un vector.
 template <typename T>
 std::vector<T> softmax(std::vector<T> vector) {
