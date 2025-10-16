@@ -142,7 +142,27 @@ void main_4() {
         std::cout << "Excepción capturada al hacer top en pila vacía: " << e.what() << std::endl;
     }
 }
+
 // Ejercicio 5: Escribe una función template que reciba un mapa y devuelva un vector con todas sus claves.
+template <typename T, typename U>
+std::vector<T> claves_mapa(std::map<T, U> hash_map) {
+    std::vector<T> keys_vector;
+    for (std::pair<T, U> clave_valor: hash_map) {
+        keys_vector.push_back(clave_valor.first);
+    }
+    return keys_vector;
+}
+
+void main_5() {
+    std::map<std::string, int> ejemplo = {
+        {"uno", 1},
+        {"dos", 2},
+        {"tres", 3}
+    };
+    std::vector<std::string> claves = claves_mapa(ejemplo);
+    std::cout << "Claves del mapa: ";
+    mostrar_vector(claves);
+}
 
 // Ejercicio 6: Escribe una función template que reciba un mapa y devuelva un vector con todos sus valores.
 
@@ -165,6 +185,6 @@ void main_4() {
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_4();
+    main_5();
     return 0;
 }
