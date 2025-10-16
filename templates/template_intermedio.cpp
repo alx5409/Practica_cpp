@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <map>
 #include <set>
+#include <exception>
 
 template <typename T>
 void mostrar_vector(std::vector<T> vector) {
@@ -79,8 +80,68 @@ void main_3() {
 }
 
 // Ejercicio 4: Escribe una clase template Pila que implemente una pila (stack) básica con métodos push, pop, top y empty.
+template <typename T>
+class Pila {
+    std::vector<T> elementos;
+public:
+    // Método constructor
+    Pila() = default;
+    Pila(std::vector<T> pila) : elementos(pila) {}
 
+    void pop() {
+        if (elementos.empty()) {
+            throw std::runtime_error("La pila está vacía.\n");
+        }
+        elementos.pop_back();
+    }
 
+    void push(T valor) {
+        elementos.push_back(valor);
+    }
+
+    T top() const {
+        if (elementos.empty()) {
+            throw std::runtime_error("La pila está vacía.\n");
+        }
+        return elementos.back();
+    }
+
+    bool empty() const {
+        return elementos.empty();
+    }
+};
+
+void main_4() {
+    Pila<int> pila;
+
+    // Probar push
+    pila.push(10);
+    pila.push(30);
+
+    std::cout << "Elemento superior (top): " << pila.top() << std::endl;
+
+    // Probar pop
+    pila.pop();
+    std::cout << "Elemento superior tras pop: " << pila.top() << std::endl;
+
+    // Probar empty
+    pila.pop();
+    std::cout << "¿La pila está vacía? " << (pila.empty() ? "Sí" : "No") << std::endl;
+
+    // Probar excepción al hacer pop en pila vacía
+    try {
+        pila.pop();
+    } catch (const std::exception& e) {
+        std::cout << "Excepción capturada al hacer pop en pila vacía: " << e.what() << std::endl;
+    }
+
+    // Probar excepción al hacer top en pila vacía
+    try {
+        pila.top();
+    } catch (const std::exception& e) {
+        std::cout << "Excepción capturada al hacer top en pila vacía: " << e.what() << std::endl;
+    }
+}
 // Ejercicio 5: Escribe una función template que reciba un mapa y devuelva un vector con todas sus claves.
 
 // Ejercicio 6: Escribe una función template que reciba un mapa y devuelva un vector con todos sus valores.
@@ -104,6 +165,6 @@ void main_3() {
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_3();
+    main_4();
     return 0;
 }
