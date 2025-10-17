@@ -5,10 +5,12 @@
 #include <map>
 #include <set>
 #include <exception>
+#include <stdexcept>
+#include <deque>
 
 template <typename T>
-void mostrar_vector(std::vector<T> vector) {
-    for (int i = 0; i < vector.size(); i++) {
+void mostrar_vector(const std::vector<T>& vector) {
+    for (size_t i = 0; i < vector.size(); ++i) {
         std::cout << vector[i] << " ";
     }
     std::cout << std::endl;
@@ -248,6 +250,75 @@ void main_8() {
 
 // Ejercicio 9: Escribe una clase template Cola que implemente una cola (queue) básica con métodos enqueue, dequeue, front y empty.
 template <typename T>
+class ArrayCircular {
+    std::vector<T> buffer;
+    size_t head = 0;
+    size_t tail = 0;
+    size_t count = 0;
+    size_t max_size = 0;
+public:
+    explicit ArrayCircular(size_t capacity)
+        : buffer(capacity), head(0), tail(0), count(0), max_size(capacity) {
+        if (capacity == 0) throw std::invalid_argument("La capacidad debe ser > 0");
+    }
+
+    bool empty() const noexcept { return count == 0; }
+
+    bool enqueue(const T& valor) {
+        if (count == max_size) return false;
+        buffer[tail] = valor;
+        tail = (tail + 1) % max_size;
+        ++count;
+        return true;
+    }
+
+    bool dequeue() {
+        if (empty()) return false;
+        head = (head + 1) % max_size;
+        --count;
+        return true;
+    }
+
+    T& front() {
+        if (empty()) throw std::out_of_range("La cola está vacía");
+        return buffer[head];
+    }
+    const T& front() const {
+        if (empty()) throw std::out_of_range("La cola está vacía");
+        return buffer[head];
+    }
+};
+
+void main_9() {
+    ArrayCircular<int> cola(3);
+
+    cola.enqueue(1);
+    cola.enqueue(2);
+    cola.enqueue(3);
+    // Esta linea debe fallar
+    cola.enqueue(4);
+
+    std::cout << "Front: " << cola.front() << std::endl;
+    cola.dequeue();
+    std::cout << "Front tras dequeue: " << cola.front() << std::endl;
+
+    cola.dequeue();
+    cola.dequeue();
+    std::cout << "¿La cola está vacía? " << (cola.empty() ? "Sí" : "No") << std::endl;
+
+    // Probar la vuelta al array circular
+    std::cout << "Probar vuelta:" << std::endl;
+    cola.enqueue(10);
+    cola.enqueue(20);
+    cola.enqueue(30);
+    cola.dequeue();
+    cola.enqueue(40);
+
+    while (!cola.empty()) {
+        std::cout << "-> " << cola.front() << std::endl;
+        cola.dequeue();
+    }
+}
 
 // Ejercicio 10: Escribe una función template que reciba un vector y un predicado, y devuelva un nuevo vector con los elementos que cumplen el predicado.
 
@@ -262,6 +333,6 @@ template <typename T>
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_8();
+    main_9();
     return 0;
 }
