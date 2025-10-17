@@ -321,6 +321,37 @@ void main_9() {
 }
 
 // Ejercicio 10: Escribe una función template que reciba un vector y un predicado, y devuelva un nuevo vector con los elementos que cumplen el predicado.
+// Un predicado es una función que recibe un elemento y devuelve true si el elemento cumple una condicion y false en otro caso.
+// Normalmente un predicado es una lambda
+template <typename T, typename Pred>
+std::vector<T> vector_predicado(std::vector<T> vector, Pred pred) {
+    std::vector<T> vector_filtrado;
+    for (T valor: vector) {
+        if (pred(valor)) {
+            vector_filtrado.push_back(valor);
+        }
+    }
+    return vector_filtrado;
+}
+
+void main_10() {
+    // Prueba 1: enteros, pares
+    std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8};
+    auto pares = vector_predicado(nums, [](int x){ return x % 2 == 0; });
+    std::cout << "Pares: ";
+    mostrar_vector(pares);
+
+    // Prueba 2: enteros, mayores que 4
+    auto mayores4 = vector_predicado(nums, [](int x){ return x > 4; });
+    std::cout << "Mayores que 4: ";
+    mostrar_vector(mayores4);
+
+    // Prueba 3: strings, longitud > 3
+    std::vector<std::string> palabras = {"uno", "dos", "tres", "cuatro", "cinco"};
+    auto largas = vector_predicado(palabras, [](const std::string& s){ return s.size() > 3; });
+    std::cout << "Palabras largas: ";
+    mostrar_vector(largas);
+}
 
 // Ejercicio 11: Escribe una función template que reciba un vector y lo ordene usando un comparador pasado como parámetro.
 
@@ -333,6 +364,6 @@ void main_9() {
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_9();
+    main_10();
     return 0;
 }
