@@ -422,12 +422,41 @@ void main_12(){
     par.mostrar_valores();
 }
 // Ejercicio 13: Escribe una función template que reciba un vector y devuelva el segundo valor más grande.
+template <typename T>
+T segundo_valor_maximo(std::vector<T> vector) {
+    if (vector.size() < 2) {
+        throw std::invalid_argument("El  vector tiene que ser por lo menos de tamaño 2.\n");
+    }
+    std::pair<T, T> valores_maximos = {vector[0], vector[0]};
+    int posicion_valor_maximo = 0;
+    // bucle para buscar el maximo
+    for (int i = 0; i < vector.size(); i++) {
+        if (valores_maximos.first < vector[i]) {
+            valores_maximos.first = vector[i];
+            posicion_valor_maximo = i;
+        }
+    }
+    // bucle para buscar el maximo saltando el maximo
+    for (int i = 0; i < vector.size(); i++) {
+        if (valores_maximos.second < vector[i] && i != posicion_valor_maximo) {
+            valores_maximos.second = vector[i];
+        }
+    }
+
+    return valores_maximos.second;
+}
+
+void main_13() {
+    std::vector<int> vector_enteros = {1, 6, 2, 5, 3, 4};
+    int s_valor_maximo = segundo_valor_maximo(vector_enteros);
+    std::cout << "El segundo valor máximo es: " << s_valor_maximo << ".\n";
+}
 
 // Ejercicio 14: Escribe una función template que reciba un vector y devuelva true si está ordenado (ascendente o descendente).
 
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_12();
+    main_13();
     return 0;
 }
