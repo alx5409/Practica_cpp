@@ -5,10 +5,12 @@
 #include <map>
 #include <set>
 #include <exception>
+#include <stdexcept>
+#include <deque>
 
 template <typename T>
-void mostrar_vector(std::vector<T> vector) {
-    for (int i = 0; i < vector.size(); i++) {
+void mostrar_vector(const std::vector<T>& vector) {
+    for (size_t i = 0; i < vector.size(); ++i) {
         std::cout << vector[i] << " ";
     }
     std::cout << std::endl;
@@ -165,16 +167,235 @@ void main_5() {
 }
 
 // Ejercicio 6: Escribe una función template que reciba un mapa y devuelva un vector con todos sus valores.
+template <typename T, typename U>
+std::vector<U> valores_hash_map(std::map<T, U> hash_map) {
+    std::vector<U> values_vector;
+    for (std::pair<T, U> clave_valor: hash_map) {
+        values_vector.push_back(clave_valor.second);
+    }
+    return values_vector;
+}
+
+void main_6() {
+    std::map<std::string, int> ejemplo = {
+        {"uno", 1},
+        {"dos", 2},
+        {"tres", 3}
+    };
+    std::vector<int> valores = valores_hash_map(ejemplo);
+    std::cout << "Valores del mapa: ";
+    mostrar_vector(valores);
+}
 
 // Ejercicio 7: Escribe una función template que reciba dos mapas y devuelva un nuevo mapa con la intersección de claves y sus valores correspondientes.
+template <typename T, typename U>
+std::map<T, std::pair<U, U>> interseccion_por_claves_mapas(const std::map<T, U>& hash_map_1,
+                                                           const std::map<T, U>& hash_map_2) {
+    std::map<T, std::pair<U, U>> interseccion;
+    for (const auto& [clave_1, valor_1] : hash_map_1) {
+        auto it = hash_map_2.find(clave_1);
+        if (it != hash_map_2.end()) {
+            interseccion.emplace(clave_1, std::make_pair(valor_1, it->second));
+        }
+    }
+    return interseccion;
+                                                           }
+
+void main_7() {
+    std::map<std::string,int> m1 = {
+        {"uno", 1},
+        {"dos", 2},
+        {"tres", 3}
+    };
+    std::map<std::string,int> m2 = {
+        {"dos", 20},
+        {"tres", 30},
+        {"cuatro", 40}
+    };
+
+    std::map<std::string, std::pair<int, int>> inter = interseccion_por_claves_mapas(m1, m2);
+
+    std::cout << "Intersección (clave : (valor_en_m1, valor_en_m2))\n";
+    for (const auto& [clave, valores] : inter) {
+        std::cout << clave << " : (" << valores.first << ", " << valores.second << ")\n";
+    }
+}
 
 // Ejercicio 8: Escribe una función template que reciba un vector y devuelva un set con los elementos únicos.
+template <typename T>
+std::set<T> quitar_duplicados(const std::vector<T>& vector) {
+    std::set<T> conjunto;
+    for (T elemento : vector) {
+        conjunto.insert(elemento);
+    }
+    return conjunto;
+}
+
+template <typename T>
+void mostrar_conjunto(const std::set<T>& conjunto) {
+    std::cout << "[ ";
+    for (T elemento : conjunto) {
+        std::cout << elemento << " ";
+    }
+    std::cout << "]\n";
+}
+
+void main_8() {
+    std::vector<int> vector_enteros = {1, 2, 3 , 4, 5, 1};
+    std::set<int> conjunto;
+    mostrar_vector(vector_enteros);
+    conjunto = quitar_duplicados(vector_enteros);
+    mostrar_conjunto(conjunto);
+}
 
 // Ejercicio 9: Escribe una clase template Cola que implemente una cola (queue) básica con métodos enqueue, dequeue, front y empty.
+template <typename T>
+class ArrayCircular {
+    std::vector<T> buffer;
+    size_t head = 0;
+    size_t tail = 0;
+    size_t count = 0;
+    size_t max_size = 0;
+public:
+    explicit ArrayCircular(size_t capacity)
+        : buffer(capacity), head(0), tail(0), count(0), max_size(capacity) {
+        if (capacity == 0) throw std::invalid_argument("La capacidad debe ser > 0");
+    }
+
+    bool empty() const noexcept { return count == 0; }
+
+    bool enqueue(const T& valor) {
+        if (count == max_size) return false;
+        buffer[tail] = valor;
+        tail = (tail + 1) % max_size;
+        ++count;
+        return true;
+    }
+
+    bool dequeue() {
+        if (empty()) return false;
+        head = (head + 1) % max_size;
+        --count;
+        return true;
+    }
+
+    T& front() {
+        if (empty()) throw std::out_of_range("La cola está vacía");
+        return buffer[head];
+    }
+    const T& front() const {
+        if (empty()) throw std::out_of_range("La cola está vacía");
+        return buffer[head];
+    }
+};
+
+void main_9() {
+    ArrayCircular<int> cola(3);
+
+    cola.enqueue(1);
+    cola.enqueue(2);
+    cola.enqueue(3);
+    // Esta linea debe fallar
+    cola.enqueue(4);
+
+    std::cout << "Front: " << cola.front() << std::endl;
+    cola.dequeue();
+    std::cout << "Front tras dequeue: " << cola.front() << std::endl;
+
+    cola.dequeue();
+    cola.dequeue();
+    std::cout << "¿La cola está vacía? " << (cola.empty() ? "Sí" : "No") << std::endl;
+
+    // Probar la vuelta al array circular
+    std::cout << "Probar vuelta:" << std::endl;
+    cola.enqueue(10);
+    cola.enqueue(20);
+    cola.enqueue(30);
+    cola.dequeue();
+    cola.enqueue(40);
+
+    while (!cola.empty()) {
+        std::cout << "-> " << cola.front() << std::endl;
+        cola.dequeue();
+    }
+}
 
 // Ejercicio 10: Escribe una función template que reciba un vector y un predicado, y devuelva un nuevo vector con los elementos que cumplen el predicado.
+// Un predicado es una función que recibe un elemento y devuelve true si el elemento cumple una condicion y false en otro caso.
+// Normalmente un predicado es una lambda
+template <typename T, typename Pred>
+std::vector<T> vector_predicado(std::vector<T> vector, Pred pred) {
+    std::vector<T> vector_filtrado;
+    for (T valor: vector) {
+        if (pred(valor)) {
+            vector_filtrado.push_back(valor);
+        }
+    }
+    return vector_filtrado;
+}
+
+void main_10() {
+    // Prueba 1: enteros, pares
+    std::vector<int> nums = {1, 2, 3, 4, 5, 6, 7, 8};
+    auto pares = vector_predicado(nums, [](int x){ return x % 2 == 0; });
+    std::cout << "Pares: ";
+    mostrar_vector(pares);
+
+    // Prueba 2: enteros, mayores que 4
+    auto mayores4 = vector_predicado(nums, [](int x){ return x > 4; });
+    std::cout << "Mayores que 4: ";
+    mostrar_vector(mayores4);
+
+    // Prueba 3: strings, longitud > 3
+    std::vector<std::string> palabras = {"uno", "dos", "tres", "cuatro", "cinco"};
+    auto largas = vector_predicado(palabras, [](const std::string& s){ return s.size() > 3; });
+    std::cout << "Palabras largas: ";
+    mostrar_vector(largas);
+}
 
 // Ejercicio 11: Escribe una función template que reciba un vector y lo ordene usando un comparador pasado como parámetro.
+template <typename T, typename Comp>
+void ordena_vector_con_comparador(std::vector<T>& vector, Comp comparador) {
+    // Ordenaremos usando burbuja
+    int n = vector.size();
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - 1 - i; j++) {
+            if (comparador(vector[j + 1], vector[j])){
+                std::swap(vector[j], vector[j + 1]);
+            }
+        }
+    }
+}
+
+void main_11() {
+    // Prueba con enteros
+    std::vector<int> vi = {5, 2, 9, 1, 5, 6};
+    std::cout << "Original (int): ";
+    mostrar_vector(vi);
+
+    // Orden ascendente
+    ordena_vector_con_comparador(vi, [](int a, int b){ return a < b; });
+    std::cout << "Ordenado ascendente (int): ";
+    mostrar_vector(vi);
+
+    // Orden descendente
+    ordena_vector_con_comparador(vi, [](int a, int b){ return a > b; });
+    std::cout << "Ordenado descendente (int): ";
+    mostrar_vector(vi);
+
+    // Prueba con strings
+    std::vector<std::string> vs = {"delta", "alpha", "charlie", "bravo"};
+    std::cout << "Original (string): ";
+    mostrar_vector(vs);
+
+    ordena_vector_con_comparador(vs, [](const std::string& a, const std::string& b){ return a < b; });
+    std::cout << "Ordenado ascendente (string): ";
+    mostrar_vector(vs);
+
+    ordena_vector_con_comparador(vs, [](const std::string& a, const std::string& b){ return a > b; });
+    std::cout << "Ordenado descendente (string): ";
+    mostrar_vector(vs);
+}
 
 // Ejercicio 12: Escribe una clase template ParOrdenado que almacene dos valores y tenga un método para intercambiarlos.
 
@@ -185,6 +406,6 @@ void main_5() {
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_5();
+    main_11();
     return 0;
 }
