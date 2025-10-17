@@ -354,6 +354,48 @@ void main_10() {
 }
 
 // Ejercicio 11: Escribe una función template que reciba un vector y lo ordene usando un comparador pasado como parámetro.
+template <typename T, typename Comp>
+void ordena_vector_con_comparador(std::vector<T>& vector, Comp comparador) {
+    // Ordenaremos usando burbuja
+    int n = vector.size();
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - 1 - i; j++) {
+            if (comparador(vector[j + 1], vector[j])){
+                std::swap(vector[j], vector[j + 1]);
+            }
+        }
+    }
+}
+
+void main_11() {
+    // Prueba con enteros
+    std::vector<int> vi = {5, 2, 9, 1, 5, 6};
+    std::cout << "Original (int): ";
+    mostrar_vector(vi);
+
+    // Orden ascendente
+    ordena_vector_con_comparador(vi, [](int a, int b){ return a < b; });
+    std::cout << "Ordenado ascendente (int): ";
+    mostrar_vector(vi);
+
+    // Orden descendente
+    ordena_vector_con_comparador(vi, [](int a, int b){ return a > b; });
+    std::cout << "Ordenado descendente (int): ";
+    mostrar_vector(vi);
+
+    // Prueba con strings
+    std::vector<std::string> vs = {"delta", "alpha", "charlie", "bravo"};
+    std::cout << "Original (string): ";
+    mostrar_vector(vs);
+
+    ordena_vector_con_comparador(vs, [](const std::string& a, const std::string& b){ return a < b; });
+    std::cout << "Ordenado ascendente (string): ";
+    mostrar_vector(vs);
+
+    ordena_vector_con_comparador(vs, [](const std::string& a, const std::string& b){ return a > b; });
+    std::cout << "Ordenado descendente (string): ";
+    mostrar_vector(vs);
+}
 
 // Ejercicio 12: Escribe una clase template ParOrdenado que almacene dos valores y tenga un método para intercambiarlos.
 
@@ -364,6 +406,6 @@ void main_10() {
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_10();
+    main_11();
     return 0;
 }
