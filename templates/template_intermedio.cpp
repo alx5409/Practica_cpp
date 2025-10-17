@@ -427,17 +427,17 @@ T segundo_valor_maximo(std::vector<T> vector) {
     if (vector.size() < 2) {
         throw std::invalid_argument("El  vector tiene que ser por lo menos de tamaño 2.\n");
     }
-    std::pair<T, T> valores_maximos = {vector[0], vector[0]};
+    std::pair<T, T> valores_maximos = {vector[0], vector[1]};
     int posicion_valor_maximo = 0;
     // bucle para buscar el maximo
-    for (int i = 0; i < vector.size(); i++) {
+    for (size_t i = 0; i < vector.size(); i++) {
         if (valores_maximos.first < vector[i]) {
             valores_maximos.first = vector[i];
             posicion_valor_maximo = i;
         }
     }
     // bucle para buscar el maximo saltando el maximo
-    for (int i = 0; i < vector.size(); i++) {
+    for (size_t i = 0; i < vector.size(); i++) {
         if (valores_maximos.second < vector[i] && i != posicion_valor_maximo) {
             valores_maximos.second = vector[i];
         }
@@ -457,7 +457,7 @@ template <typename T>
 bool esta_ordenado(std::vector<T> vector) {
     bool esta_ordenado_en_ascendente = true;
     bool esta_ordenado_en_descendente = true;
-    for (int i = 0; i < vector.size() - 1; i++) {
+    for (size_t i = 0; i < vector.size() - 1; i++) {
         if (vector[i] < vector[i + 1]) {
             esta_ordenado_en_descendente = false;
         }
@@ -492,8 +492,29 @@ void main_14() {
 }
 
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
+template <typename T>
+std::map<T, int> frecuencia_en_vector(std::vector<T> vector) {
+    std::map<T, int> diccionario_frecuencias;
+    for (int i = 0; i < vector.size(); i++) {
+        diccionario_frecuencias[vector[i]] += 1;
+    }
+    return diccionario_frecuencias;
+}
+
+template <typename T, typename U>
+void mostrar_hash_map(std::map<T,U> hash_map) {
+    for (std::pair<T,U> clave_valor : hash_map) {
+        std::cout << "Clave = " << clave_valor.first << "\tValor = " << clave_valor.second << std::endl;
+    }
+}
+
+void main_15() {
+    std::vector<int> vector_enteros = {1, 2, 3, 4, 6, 2, 3, 4, 1 , 1, 1};
+    std::map<int, int> frecuency_map = frecuencia_en_vector(vector_enteros);
+    mostrar_hash_map(frecuency_map);
+}
 
 int main() {
-    main_14();
+    main_15();
     return 0;
 }
