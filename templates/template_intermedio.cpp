@@ -220,8 +220,34 @@ void main_7() {
 }
 
 // Ejercicio 8: Escribe una función template que reciba un vector y devuelva un set con los elementos únicos.
+template <typename T>
+std::set<T> quitar_duplicados(const std::vector<T>& vector) {
+    std::set<T> conjunto;
+    for (T elemento : vector) {
+        conjunto.insert(elemento);
+    }
+    return conjunto;
+}
+
+template <typename T>
+void mostrar_conjunto(const std::set<T>& conjunto) {
+    std::cout << "[ ";
+    for (T elemento : conjunto) {
+        std::cout << elemento << " ";
+    }
+    std::cout << "]\n";
+}
+
+void main_8() {
+    std::vector<int> vector_enteros = {1, 2, 3 , 4, 5, 1};
+    std::set<int> conjunto;
+    mostrar_vector(vector_enteros);
+    conjunto = quitar_duplicados(vector_enteros);
+    mostrar_conjunto(conjunto);
+}
 
 // Ejercicio 9: Escribe una clase template Cola que implemente una cola (queue) básica con métodos enqueue, dequeue, front y empty.
+template <typename T>
 
 // Ejercicio 10: Escribe una función template que reciba un vector y un predicado, y devuelva un nuevo vector con los elementos que cumplen el predicado.
 
@@ -236,6 +262,6 @@ void main_7() {
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_7();
+    main_8();
     return 0;
 }
