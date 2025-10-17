@@ -398,7 +398,29 @@ void main_11() {
 }
 
 // Ejercicio 12: Escribe una clase template ParOrdenado que almacene dos valores y tenga un método para intercambiarlos.
+template <typename T>
+class ParOrdenado {
+      T valor_1;
+      T valor_2;
+public:
+    ParOrdenado(T value_1, T value_2): valor_1(value_1), valor_2(value_2) {};
+    void intercambiar_valores() {
+        std::swap(valor_1, valor_2);
+    }
 
+    void mostrar_valores() {
+        std::cout << "El primer valor es: " << valor_1 << " y el segundo es  " << valor_2 << ".\n";
+    }
+};
+
+void main_12(){
+    int valor_1 = 1;
+    int valor_2 = 2;
+    ParOrdenado par(valor_1, valor_2);
+    par.mostrar_valores();
+    par.intercambiar_valores();
+    par.mostrar_valores();
+}
 // Ejercicio 13: Escribe una función template que reciba un vector y devuelva el segundo valor más grande.
 
 // Ejercicio 14: Escribe una función template que reciba un vector y devuelva true si está ordenado (ascendente o descendente).
@@ -406,6 +428,6 @@ void main_11() {
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_11();
+    main_12();
     return 0;
 }
