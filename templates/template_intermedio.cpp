@@ -453,10 +453,47 @@ void main_13() {
 }
 
 // Ejercicio 14: Escribe una función template que reciba un vector y devuelva true si está ordenado (ascendente o descendente).
+template <typename T>
+bool esta_ordenado(std::vector<T> vector) {
+    bool esta_ordenado_en_ascendente = true;
+    bool esta_ordenado_en_descendente = true;
+    for (int i = 0; i < vector.size() - 1; i++) {
+        if (vector[i] < vector[i + 1]) {
+            esta_ordenado_en_descendente = false;
+        }
+        if (vector[i] > vector[i + 1]) {
+            esta_ordenado_en_ascendente = false;
+        }
+        if (!(esta_ordenado_en_ascendente || esta_ordenado_en_descendente)) {
+            return false;
+        }
+    }
+    if (esta_ordenado_en_ascendente && esta_ordenado_en_descendente) {
+        std::cout << "El vector es constante.\n";
+        return true;
+    }
+    if (esta_ordenado_en_ascendente) {
+        std::cout << "Está ordenado en orden ascendente.\n";
+    }
+    if (esta_ordenado_en_descendente) {
+        std::cout << "Está ordenado en orden descendente.\n";
+    }
+    
+    return true;
+}
+
+void main_14() {
+    std::vector<int> vector_ascendente = {1, 2, 3, 4};
+    std::vector<int> vector_descendente = {4, 3, 2, 1};
+    std::vector<int> vector_constante = {0, 0, 0, 0};
+    bool ordenado_1 = esta_ordenado(vector_ascendente);
+    bool ordenado_2 = esta_ordenado(vector_descendente);
+    bool ordenado_3 = esta_ordenado(vector_constante);
+}
 
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_13();
+    main_14();
     return 0;
 }
