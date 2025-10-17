@@ -186,6 +186,38 @@ void main_6() {
 }
 
 // Ejercicio 7: Escribe una función template que reciba dos mapas y devuelva un nuevo mapa con la intersección de claves y sus valores correspondientes.
+template <typename T, typename U>
+std::map<T, std::pair<U, U>> interseccion_por_claves_mapas(const std::map<T, U>& hash_map_1,
+                                                           const std::map<T, U>& hash_map_2) {
+    std::map<T, std::pair<U, U>> interseccion;
+    for (const auto& [clave_1, valor_1] : hash_map_1) {
+        auto it = hash_map_2.find(clave_1);
+        if (it != hash_map_2.end()) {
+            interseccion.emplace(clave_1, std::make_pair(valor_1, it->second));
+        }
+    }
+    return interseccion;
+                                                           }
+
+void main_7() {
+    std::map<std::string,int> m1 = {
+        {"uno", 1},
+        {"dos", 2},
+        {"tres", 3}
+    };
+    std::map<std::string,int> m2 = {
+        {"dos", 20},
+        {"tres", 30},
+        {"cuatro", 40}
+    };
+
+    std::map<std::string, std::pair<int, int>> inter = interseccion_por_claves_mapas(m1, m2);
+
+    std::cout << "Intersección (clave : (valor_en_m1, valor_en_m2))\n";
+    for (const auto& [clave, valores] : inter) {
+        std::cout << clave << " : (" << valores.first << ", " << valores.second << ")\n";
+    }
+}
 
 // Ejercicio 8: Escribe una función template que reciba un vector y devuelva un set con los elementos únicos.
 
@@ -204,6 +236,6 @@ void main_6() {
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_6();
+    main_7();
     return 0;
 }
