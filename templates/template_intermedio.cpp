@@ -165,6 +165,25 @@ void main_5() {
 }
 
 // Ejercicio 6: Escribe una función template que reciba un mapa y devuelva un vector con todos sus valores.
+template <typename T, typename U>
+std::vector<U> valores_hash_map(std::map<T, U> hash_map) {
+    std::vector<U> values_vector;
+    for (std::pair<T, U> clave_valor: hash_map) {
+        values_vector.push_back(clave_valor.second);
+    }
+    return values_vector;
+}
+
+void main_6() {
+    std::map<std::string, int> ejemplo = {
+        {"uno", 1},
+        {"dos", 2},
+        {"tres", 3}
+    };
+    std::vector<int> valores = valores_hash_map(ejemplo);
+    std::cout << "Valores del mapa: ";
+    mostrar_vector(valores);
+}
 
 // Ejercicio 7: Escribe una función template que reciba dos mapas y devuelva un nuevo mapa con la intersección de claves y sus valores correspondientes.
 
@@ -185,6 +204,6 @@ void main_5() {
 // Ejercicio 15: Escribe una función template que reciba un vector y devuelva un mapa con la frecuencia de cada elemento.
 
 int main() {
-    main_5();
+    main_6();
     return 0;
 }
