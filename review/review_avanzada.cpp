@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <math.h>
+#include <set>
 // ===================== EJERCICIO 1 =====================
 // Calculadora de polinomios
 // Implementa una clase Polinomio que permita sumar, restar y multiplicar polinomios de cualquier grado.
@@ -85,9 +86,198 @@ void main_ej1() {
 // Sudoku Solver
 // Implementa un solucionador de Sudoku usando backtracking para resolver cualquier tablero válido.
 
-// int main_ej2() {
-//     // Tu código aquí
-// }
+class Tablero {
+    int dimension = 9;
+    int casillas[9][9] = {
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0}
+    };  // Inicializa a 0 las casillas a 0
+public:
+    Tablero(int matriz_casillas[9][9]) {
+        for (int i = 0; i < dimension; i++) {
+            for( int j = 0; j < dimension; j++) {
+                if (matriz_casillas[i][j] > 0 && matriz_casillas[i][j] < 10) {
+                    casillas[i][j] = matriz_casillas[i][j];
+                } else {
+                    casillas[i][j] = 0;
+                }
+            }
+        }
+    }
+
+    void mostrar_tablero() const {
+        std::cout << "\n";
+        for (int i = 0; i < dimension; i++) {
+            // Línea horizontal entre bloques
+            if (i % 3 == 0) {
+                std::cout << "+===========+===========+===========+\n";
+            } else {
+                std::cout << "|---+---+---|---+---+---|---+---+---|\n";
+            }
+            for (int j = 0; j < dimension; j++) {
+                if (j % 3 == 0) std::cout << "|";
+                else std::cout << ":";
+                std::cout << " " << casillas[i][j] << " ";
+            }
+            std::cout << "|\n";
+        }
+        std::cout << "+===========+===========+===========+\n";
+    }
+
+    bool esta_resuelto() const {
+        // Comprueba que en todas las filas no hay elementos repetidos y no hay ceros
+        for (int i = 0; i < dimension; i++) {
+            std::set<int> fila;
+            for (int l = 0; l < dimension; l++) {
+                if (casillas[i][l] == 0) return false;
+                fila.insert(casillas[i][l]);
+            } 
+            if (fila.size() < 9) return false;
+        }
+        // Comprueba que en todas las columnas no hay elementos repetidos y no hay ceros
+        for (int j = 0; j < dimension; j++) {
+            std::set<int> columna;
+            for (int l = 0; l < dimension; l++) {
+                if (casillas[l][j] == 0) return false;
+                columna.insert(casillas[l][j]);
+            } 
+            if (columna.size() < 9) return false;
+        }
+        // Comprueba que en cada bloque no hay elementos repetidos y no hay ceros
+        int vertices_iniciales[9][2] = {
+            {0, 0}, {0, 3}, {0, 6},
+            {3, 0}, {3, 3}, {3, 6},
+            {6, 0}, {6, 3}, {6, 6}
+        };   
+
+        for (int k = 0; k < 9; k++) {
+            int fila_inicio = vertices_iniciales[k][0];
+            int columna_inicio = vertices_iniciales[k][1];
+            std::set<int> bloque;
+            for (int i = fila_inicio; i < fila_inicio + 3; i++) {
+                for (int j = columna_inicio; j < columna_inicio + 3; j++) {
+                    if (casillas[i][j] == 0) return false;
+                    bloque.insert(casillas[i][j]);
+                }
+            }
+            if (bloque.size() < 9) return false;
+        }
+        return true;
+    }
+
+    std::pair<int, int> buscar_celdas_vacias() const {
+        for (int i = 0; i < dimension; i ++) {
+            for (int j = 0; j < dimension; j++) {
+                if (casillas[i][j] == 0) {
+                    return {i, j};
+                }
+            }
+        }
+        return {-1, -1};    // Si no encuentra casillas vacias
+    }
+
+    bool es_movimiento_valido(int fila, int columna, int valor) const {
+
+        // Comprobar límites
+        if (fila < 0 || fila > 8 || columna < 0 || columna > 8) {
+            return false;
+        }
+
+        // Comprobar si la casilla ya está ocupada
+        if (casillas[fila][columna] != 0) {
+            return false;
+        }
+
+        // Comprobar fila y columna
+        for (int i = 0; i < dimension; i++) {
+            if (casillas[fila][i] == valor) {
+                return false;
+            }
+            if (casillas[i][columna] == valor) {
+                return false;
+            }
+        }
+
+        // Comprobar bloque 3x3
+        int fila_inicio = (fila / 3) * 3;
+        int columna_inicio = (columna / 3) * 3;
+        for (int i = fila_inicio; i < fila_inicio + 3; i++) {
+            for (int j = columna_inicio; j < columna_inicio + 3; j++) {
+                if (casillas[i][j] == valor) {
+                    return false;
+                }
+            }
+        }
+
+        // Si pasa todas las comprobaciones, el movimiento es válido
+        return true;
+    }
+
+    // hace el movimiento sin imprimir ni volver a validar (usar solo desde el solver)
+    void asignar_sin_validar(int fila, int columna, int valor) {
+        casillas[fila][columna] = valor;
+    }
+
+    // Solver: backtracking clásico
+    bool resolver_backtracking() {
+        auto [fila, columna] = buscar_celdas_vacias();
+        if (fila == -1) return true; // sin vacías -> resuelto
+
+        for (int valor = 1; valor <= 9; valor++) {
+            if (es_movimiento_valido(fila, columna, valor)) {
+                asignar_sin_validar(fila, columna, valor);
+                if (resolver_backtracking()) return true;
+                asignar_sin_validar(fila, columna, 0); // backtrack
+            }
+        }
+        return false;
+    }
+
+    bool resolver() {
+        return resolver_backtracking();
+    }
+
+    void hacer_movimiento(int fila, int columna, int valor) {
+        if (!es_movimiento_valido(fila, columna, valor)) {
+            std::cout << "No es movimiento valido\n";
+            return;
+        }
+        casillas[fila][columna] = valor;
+    }
+};
+
+void main_2() {
+    int problema[9][9] = {
+        {5,3,0,0,7,0,0,0,0},
+        {6,0,0,1,9,5,0,0,0},
+        {0,9,8,0,0,0,0,6,0},
+        {8,0,0,0,6,0,0,0,3},
+        {4,0,0,8,0,3,0,0,1},
+        {7,0,3,0,2,0,0,0,6},
+        {0,6,0,0,0,0,2,8,0},
+        {0,0,0,4,1,9,0,0,5},
+        {0,0,0,0,8,0,0,7,9}
+    };
+
+    Tablero t(problema);
+
+    std::cout << "Tablero inicial:";
+    t.mostrar_tablero();
+
+    if (t.resolver()) {
+        std::cout << "\nSolución encontrada:\n";
+        t.mostrar_tablero();
+    } else {
+        std::cout << "\nNo se encontró solución.\n";
+    }
+}
 
 // ===================== EJERCICIO 3 =====================
 // Grafo dirigido con búsqueda BFS y DFS
@@ -318,6 +508,6 @@ void main_ej1() {
 // Puedes llamar a cualquier main_ejX desde aquí para probar cada ejercicio
 
 int main() {
-    main_ej1();
+    main_2();
     return 0;
 }
