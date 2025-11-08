@@ -422,6 +422,14 @@ void main_12(){
     par.mostrar_valores();
 }
 // Ejercicio 13: Escribe una función template que reciba un vector y devuelva el segundo valor más grande.
+/**
+ * Devuelve el segundo valor máximo de un vector.
+ * Si el vector tiene menos de dos elementos, lanza std::invalid_argument.
+ * Busca el máximo y luego el segundo máximo distinto al primero.
+ * No garantiza resultado correcto si hay valores repetidos como máximo.
+ * @param vector Vector de elementos comparables.
+ * @return Segundo valor máximo.
+ */
 template <typename T>
 T segundo_valor_maximo(std::vector<T> vector) {
     if (vector.size() < 2) {
@@ -444,12 +452,6 @@ T segundo_valor_maximo(std::vector<T> vector) {
     }
 
     return valores_maximos.second;
-}
-
-void main_13() {
-    std::vector<int> vector_enteros = {1, 6, 2, 5, 3, 4};
-    int s_valor_maximo = segundo_valor_maximo(vector_enteros);
-    std::cout << "El segundo valor máximo es: " << s_valor_maximo << ".\n";
 }
 
 // Ejercicio 14: Escribe una función template que reciba un vector y devuelva true si está ordenado (ascendente o descendente).
@@ -501,6 +503,10 @@ std::map<T, int> frecuencia_en_vector(std::vector<T> vector) {
     return diccionario_frecuencias;
 }
 
+/**
+ * Muestra las claves y valores de un mapa por consola.
+ * @param hash_map Mapa a mostrar.
+ */
 template <typename T, typename U>
 void mostrar_hash_map(std::map<T,U> hash_map) {
     for (std::pair<T,U> clave_valor : hash_map) {
