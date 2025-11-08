@@ -4,7 +4,10 @@
 #include <functional>
 #include <math.h>
 
-// Funciones auxiliares para los ejercicios.
+/**
+ * Muestra los elementos de un vector por consola.
+ * @param vector Vector a mostrar.
+ */
 template <typename T>
 void mostrar_vector(std::vector<T> vector) {
     std::cout << "[";
@@ -14,6 +17,10 @@ void mostrar_vector(std::vector<T> vector) {
     std::cout << "]\n";
 }
 
+/**
+ * Muestra una matriz (vector de vectores) por consola.
+ * @param matriz Matriz a mostrar.
+ */
 template <typename T>
 void mostrar_matriz(const std::vector<std::vector<T>> matriz) {
     int n = matriz.size();
@@ -22,6 +29,11 @@ void mostrar_matriz(const std::vector<std::vector<T>> matriz) {
     }
 }
 
+/**
+ * Comprueba si una matriz es cuadrada.
+ * Lanza std::invalid_argument si alguna fila no tiene el mismo tamaño que el número de filas.
+ * @param matriz Matriz a comprobar.
+ */
 template <typename T>
 void comprobar_matriz_cuadrada(const std::vector<std::vector<T>> matriz) {
     for (const auto& fila : matriz) {
@@ -30,14 +42,25 @@ void comprobar_matriz_cuadrada(const std::vector<std::vector<T>> matriz) {
         }
     }
 }
-// Ejercicio 1: Escribe una función template que multiplique todos los elementos de un vector por un escalar.
+
+/**
+ * Multiplica todos los elementos de un vector por un escalar.
+ * @param vector Vector a modificar.
+ * @param escalar Valor por el que multiplicar cada elemento.
+ */
 template <typename T>
 void escalar_vector(std::vector<T>& vector,const  T escalar) {
     for (int i = 0; i < vector.size(); i++) {
         vector[i] = vector[i] * escalar;
     }
 }
-// Ejercicio 2: Escribe una función template que calcule el producto escalar de dos vectores del mismo tamaño.
+
+/**
+ * Calcula el producto escalar de dos vectores del mismo tamaño.
+ * @param vector_1 Primer vector.
+ * @param vector_2 Segundo vector.
+ * @return Producto escalar.
+ */
 template <typename T>
 T producto_escalar(std::vector<T> vector_1, std::vector<T> vector_2) {
     T resultado = 0;
@@ -49,22 +72,29 @@ T producto_escalar(std::vector<T> vector_1, std::vector<T> vector_2) {
     }
     return resultado;
 }
-// Ejercicio 3: Escribe una función template que transponga una matriz cuadrada representada como vector de vectores.
+
+/**
+ * Transpone una matriz cuadrada (intercambia filas y columnas).
+ * @param matriz Matriz cuadrada a transponer.
+ */
 template <typename T>
 void transponer_matriz_cuadrada(std::vector<std::vector<T>>& matriz) {
     int n = matriz.size();
-    // Comprueba que la matriz es cuadrada, si no lo es tira una excepcion.
     comprobar_matriz_cuadrada(matriz);
-    // La matriz es un vector de vectores fila, ahora haremos que cada fila sea una columna
     for (int fila = 0; fila < n; fila++) {
-        for (int columna = fila + 1; columna < n; columna++){   // Recorre solo la matriz triangular superior
+        for (int columna = fila + 1; columna < n; columna++){
             T temp = matriz[fila][columna];
             matriz[fila][columna] = matriz[columna][fila];
             matriz[columna][fila] = temp;
-            }
+        }
     }
-}   
-// Ejercicio 4: Escribe una función template que aplique una función (lambda o función normal) a todos los elementos de un vector.
+}
+
+/**
+ * Aplica una función a todos los elementos de un vector.
+ * @param vector Vector a modificar.
+ * @param funcion Función a aplicar.
+ */
 template <typename T, typename Func>
 void aplicar_funcion_a_vector(std::vector<T>& vector, Func funcion) {
     for (int i = 0; i < vector.size(); i++) {
@@ -72,12 +102,18 @@ void aplicar_funcion_a_vector(std::vector<T>& vector, Func funcion) {
     }
 }
 
-// Ejercicio 5: Escribe una clase template Matriz que permita sumar y multiplicar matrices cuadradas.
+/**
+ * Clase Matriz para sumar y multiplicar matrices cuadradas.
+ */
 template <typename T>
 class Matriz {
 public:
     std::vector<std::vector<T>> entrada;
     int dim;
+    /**
+     * Constructor que recibe una matriz cuadrada.
+     * @param elementos Matriz cuadrada.
+     */
     Matriz(std::vector<std::vector<T>> elementos) {
         int n = elementos.size();
         comprobar_matriz_cuadrada(elementos);
@@ -85,6 +121,10 @@ public:
         entrada = elementos;
     }
 
+    /**
+     * Suma otra matriz cuadrada de la misma dimensión.
+     * @param matriz Matriz a sumar.
+     */
     void sumar(const std::vector<std::vector<T>>& matriz) {
         int n = matriz.size();
         if (n != dim) {
@@ -99,6 +139,10 @@ public:
         }
     }
 
+    /**
+     * Multiplica por otra matriz cuadrada de la misma dimensión.
+     * @param matriz Matriz a multiplicar.
+     */
     void multiplicar(const std::vector<std::vector<T>>& matriz){
         int n = matriz.size();
         if (n != dim) {
@@ -117,7 +161,11 @@ public:
         entrada = resultado;
     }
 };
-// Ejercicio 6: Escribe una función template que normalice un vector (divida todos sus elementos por la suma total).
+
+/**
+ * Normaliza un vector dividiendo cada elemento por la suma total.
+ * @param vector Vector a normalizar.
+ */
 template <typename T>
 void normalizar_vector_suma(std::vector<T>& vector) {
    int n = vector.size();
@@ -127,9 +175,13 @@ void normalizar_vector_suma(std::vector<T>& vector) {
     }
     for (int i = 0; i < n; i++) {
         vector[i] = vector[i] / norma_vector;
-    } 
+    }
 }
 
+/**
+ * Normaliza un vector usando la norma L2 (raíz cuadrada de la suma de cuadrados).
+ * @param vector Vector a normalizar.
+ */
 template <typename T>
 void normalizar_vector_l2(std::vector<T>& vector) {
     int n = vector.size();
@@ -143,7 +195,11 @@ void normalizar_vector_l2(std::vector<T>& vector) {
     }
 }
 
-// Ejercicio 7: Escribe una función template que calcule la media y la varianza de un vector de números.
+/**
+ * Calcula la media y la varianza de un vector.
+ * @param vector Vector de números.
+ * @return Par (media, varianza).
+ */
 template <typename T>
 std::pair<T, T> media_y_varianza(std::vector<T> vector) {
     T mean = 0;
@@ -160,7 +216,12 @@ std::pair<T, T> media_y_varianza(std::vector<T> vector) {
     return {mean, var};
 }
 
-// Ejercicio 8: Escribe una función template que calcule la distancia euclídea entre dos vectores.
+/**
+ * Calcula la distancia euclídea entre dos vectores.
+ * @param vector_1 Primer vector.
+ * @param vector_2 Segundo vector.
+ * @return Distancia euclídea.
+ */
 template <typename T>
 float distancia_euclidea_entre_vectores(std::vector<T> vector_1, std::vector<T> vector_2) {
     float distancia = 0;
@@ -174,23 +235,33 @@ float distancia_euclidea_entre_vectores(std::vector<T> vector_1, std::vector<T> 
     return distancia;
 }
 
-// Ejercicio 9: Escribe una función template que aplique la función sigmoide a todos los elementos de un vector.
+/**
+ * Aplica la función sigmoide a un valor.
+ * @param x Valor de entrada.
+ * @return Resultado de la sigmoide.
+ */
 template <typename T>
 T sigmoide(const T x) {
     return 1/(1 + std::exp(-x));
 }
 
+/**
+ * Aplica la función sigmoide a todos los elementos de un vector.
+ * @param vector Vector a modificar.
+ */
 template <typename T>
 void aplicar_sigmoide_a_vector(std::vector<T>& vector) {
     aplicar_funcion_a_vector(vector, sigmoide);
 }
 
-// Ejercicio 10: Escribe una función template que realice una regresión lineal simple (y = ax + b) dados dos vectores de datos.
+/**
+ * Realiza una regresión lineal simple (y = ax + b) dados dos vectores de datos.
+ * @param x Vector de valores independientes.
+ * @param y Vector de valores dependientes.
+ * @return Par (a, b) de coeficientes.
+ */
 template <typename T>
 std::pair<T, T> linear_regression(const std::vector<T> x, const std::vector<T> y) {
-    // Usando la fórmula de la solución de mínimos cuadrados:
-    // a = (n * Σ(x_i * y_i) - Σx_i * Σy_i) / (n * Σ(x_i^2) - (Σx_i)^2)
-    // b = (Σy_i - a * Σx_i) / n
     T suma_x = 0;
     T suma_y = 0;
     T suma_productos = 0;
@@ -212,7 +283,12 @@ std::pair<T, T> linear_regression(const std::vector<T> x, const std::vector<T> y
     return {a, b};
 }
 
-// Ejercicio 11: Escribe una función template que calcule la matriz de covarianza de un conjunto de vectores.
+/**
+ * Calcula la covarianza entre dos vectores.
+ * @param x Primer vector.
+ * @param y Segundo vector.
+ * @return Covarianza.
+ */
 template <typename T>
 T covarianza(std::vector<T> x, std::vector<T> y) {
     if (x.size() != y.size()) {
@@ -221,7 +297,7 @@ T covarianza(std::vector<T> x, std::vector<T> y) {
 
     T media_x = 0;
     T media_y = 0;
-    int n = x.size()
+    int n = x.size();
     T cov = 0;
 
     for (int i = 0; i < n; i++) {
@@ -238,21 +314,23 @@ T covarianza(std::vector<T> x, std::vector<T> y) {
     return cov;
 }
 
+/**
+ * Calcula la matriz de covarianza de un conjunto de vectores.
+ * @param datos Matriz de datos (muestras x variables).
+ * @return Matriz de covarianza.
+ */
 template <typename T>
 std::vector<std::vector<T>> calcular_matriz_covarianza(const std::vector<std::vector<T>>& datos) {
-    // datos: m x n (m observaciones, n variables)
     int m = datos.size();
     if (m == 0) return {};
     int n = datos[0].size();
 
-    // Comprobar que todas las filas tienen el mismo tamaño
     for (const auto& fila : datos) {
         if (fila.size() != n) {
             throw std::invalid_argument("Todas las filas deben tener el mismo tamaño.");
         }
     }
 
-    // Extraer columnas para el calculo de la covarianza
     std::vector<std::vector<T>> columnas(n, std::vector<T>(m));
     for (int col = 0; col < n; col++) {
         for (int fila = 0; fila < m; fila++) {
@@ -260,7 +338,6 @@ std::vector<std::vector<T>> calcular_matriz_covarianza(const std::vector<std::ve
         }
     }
 
-    // Calcular matriz de covarianza (n x n): se calcula con las columnas
     std::vector<std::vector<T>> matriz(n, std::vector<T>(n, 0));
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
@@ -270,7 +347,11 @@ std::vector<std::vector<T>> calcular_matriz_covarianza(const std::vector<std::ve
     return matriz;
 }
 
-// Ejercicio 12: Escribe una función template que encuentre el valor máximo y su posición en un vector.
+/**
+ * Encuentra el valor máximo y su posición en un vector.
+ * @param vector Vector de entrada.
+ * @return Par (valor máximo, posición).
+ */
 template <typename T>
 std::pair<T, int> maximo_en_vector(std::vector<T> vector) {
     int posicion = 0;
@@ -284,7 +365,12 @@ std::pair<T, int> maximo_en_vector(std::vector<T> vector) {
     return {max, posicion};
 }
 
-// Ejercicio 13: Escribe una función template que realice el producto de una matriz por un vector.
+/**
+ * Realiza el producto de una matriz por un vector.
+ * @param matriz Matriz de entrada.
+ * @param vector Vector de entrada.
+ * @return Vector resultado del producto.
+ */
 template<typename T>
 std::vector<T> producto_matriz_vector(std::vector<std::vector<T>> matriz, std::vector<T> vector) {
     std::vector<T> producto;
@@ -297,21 +383,42 @@ std::vector<T> producto_matriz_vector(std::vector<std::vector<T>> matriz, std::v
     return producto;
 }
 
-// Ejercicio 14: Escribe una función template que implemente el descenso de gradiente para minimizar una función cuadrática.
+/**
+ * Evalúa una función cuadrática general.
+ * @param x Valor de entrada.
+ * @param a Coeficiente cuadrático.
+ * @param b Coeficiente lineal.
+ * @param c Término independiente.
+ * @return Resultado de la función cuadrática.
+ */
 template <typename T>
 T funcion_cuadratica_general(T x, T a = 1, T b = 1, T c = 1) {
     return a * pow(x, 2) + b * x + c;
 }
 
+/**
+ * Calcula la derivada de una función cuadrática general.
+ * @param x Valor de entrada.
+ * @param a Coeficiente cuadrático.
+ * @param b Coeficiente lineal.
+ * @return Derivada en x.
+ */
 template <typename T>
 T derivada_funcion_cuadratica_general(T x, T a = 1, T b = 1) {
     return 2 * a * x + b;
 }
 
+/**
+ * Implementa el descenso de gradiente para minimizar una función cuadrática.
+ * @param tasa_aprendizaje Tasa de aprendizaje.
+ * @param numero_iteraciones Número máximo de iteraciones.
+ * @param epsilon Umbral de error para detener el algoritmo.
+ * @param valor_inicial Valor inicial de la variable.
+ * @return Valor donde se alcanza el mínimo local.
+ */
 template <typename T, typename Func>
 T cuadratic_gradient_descent(T tasa_aprendizaje, int numero_iteraciones = 100, T epsilon = 1e-4,
     T valor_inicial = 0) {
-        // Manejamos execpciones al principio
         if (numero_iteraciones <= 0) {
             throw std::invalid_argument("El número de iteracionas máximo no puede ser menor o igual que 0.\n");
             return;
@@ -322,7 +429,6 @@ T cuadratic_gradient_descent(T tasa_aprendizaje, int numero_iteraciones = 100, T
         if (tasa_aprendizaje <= 0) {
             throw std::invalid_argument("La tasa de aprendizaje tiene que ser positiva.\n");
         }
-
 
         int n_iter = 0;
         T valor = valor_inicial;
@@ -335,7 +441,11 @@ T cuadratic_gradient_descent(T tasa_aprendizaje, int numero_iteraciones = 100, T
         return valor;
 }
 
-// Ejercicio 15: Escribe una función template que calcule la función softmax sobre un vector.
+/**
+ * Calcula la función softmax sobre un vector.
+ * @param vector Vector de entrada.
+ * @return Vector con probabilidades softmax.
+ */
 template <typename T>
 std::vector<T> softmax(std::vector<T> vector) {
     std::vector<T> resultado;
@@ -349,8 +459,11 @@ std::vector<T> softmax(std::vector<T> vector) {
     return resultado;
 }
 
-// Ejercicio 16: Escribe una función template que calcule la entropía cruzada (cross-entropy) entre dos vectores de probabilidades.
-
+/**
+ * Comprueba si un vector es de probabilidad (suma aproximadamente 1).
+ * @param vector Vector de entrada.
+ * @return true si suma 1, false si no.
+ */
 template <typename T>
 bool comprobar_vector_probabilidad(std::vector<T> vector) {
     T suma = 0;
@@ -358,13 +471,19 @@ bool comprobar_vector_probabilidad(std::vector<T> vector) {
         suma += vector[i];
     }
     if (std::abs(suma - 1) < 1e-6) {
-        return  true; 
+        return  true;
     }
     return false;
 }
+
+/**
+ * Calcula la entropía cruzada (cross-entropy) entre dos vectores de probabilidades.
+ * @param vector_probabilidad_1 Vector de probabilidades reales.
+ * @param vector_probabilidad_2 Vector de probabilidades predichas.
+ * @return Valor de la entropía cruzada.
+ */
 template <typename T>
 T entropia_cruzada(std::vector<T> vector_probabilidad_1, std::vector<T> vector_probabilidad_2) {
-    // Comprueba que los dos vectores que introduce suman 1
     if (!(comprobar_vector_probabilidad(vector_probabilidad_1)&&comprobar_vector_probabilidad(vector_probabilidad_2))) {
         throw std::invalid_argument("Los vectores introducidos no son de probabilidad, no suman 1.\n");
     }
