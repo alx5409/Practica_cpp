@@ -221,22 +221,21 @@ void main_5() {
 std::vector<std::vector<bool>> hacer_laberinto(int filas = 10, int columnas = 10) {
     std::vector<std::vector<bool>> laberinto(filas, std::vector<bool>(columnas, false));     // Inicializa la matriz booleana a todo falso
 
-    // Define un camino fijo de entrada (0, 0) a salida (filas-1, columnas-1)
+    // Camino predefinido: escalera diagonal (abajo, derecha, abajo, derecha...)
     int x = 0, y = 0;
-    laberinto[x][y] = true; // Marca la celda de inicio como parte del camino
-
-    for (int i = 0; i < filas; i++) {
-        laberinto[i][0] = true;
+    laberinto[x][y] = true;
+    while (x < filas - 1 && y < columnas - 1) {
+        x++; laberinto[x][y] = true; // abajo
+        y++; laberinto[x][y] = true; // derecha
     }
-    // Marca el camino desde (filas-1,0) hasta (filas-1,columnas-1)
-    for (int j = 0; j < columnas; j++) {
-        laberinto[filas-1][j] = true;
-    }
+    // Si quedan filas o columnas, termina el camino hasta el borde
+    while (x < filas - 1) { x++; laberinto[x][y] = true; }
+    while (y < columnas - 1) { y++; laberinto[x][y] = true; }
     
     // Rellena el resto aleatoriamente (sin bloquear el camino definido)
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::bernoulli_distribution d(0.3); // probabilidad de ser pared
+    std::bernoulli_distribution d(0.6); // probabilidad de ser pared
 
     for (int i = 0; i < filas; i++) {
         for (int j = 0; j < columnas; j++) {
@@ -255,6 +254,18 @@ void mostrar_laberinto(const std::vector<std::vector<bool>> &laberinto) {
         }
         std::cout << "\n";
     }
+}
+
+void mover_en_laberinto(int posicion_fila, int posicion_columna, std::vector<std::vector<bool>> &laberinto) {
+    // Movimiento simple: intenta moverse hacia la derecha o hacia abajo si es posible
+    int filas = laberinto.size();
+    int columnas = laberinto[0].size();
+    if (posicion_fila + 1 < filas && laberinto[posicion_fila + 1][posicion_columna]) {
+        posicion_fila++;
+    } else if (posicion_columna + 1 < columnas && laberinto[posicion_fila][posicion_columna + 1]) {
+        posicion_columna++;
+    }
+    laberinto[posicion_fila][posicion_columna] = true; // Marca la nueva posición como parte del camino
 }
 
 void main_6() {
