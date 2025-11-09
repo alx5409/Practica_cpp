@@ -235,7 +235,7 @@ std::vector<std::vector<bool>> hacer_laberinto(int filas = 10, int columnas = 10
     // Rellena el resto aleatoriamente (sin bloquear el camino definido)
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::bernoulli_distribution d(0.6); // probabilidad de ser pared
+    std::bernoulli_distribution d(0.6); // probabilidad de ser camino
 
     for (int i = 0; i < filas; i++) {
         for (int j = 0; j < columnas; j++) {
@@ -248,12 +248,27 @@ std::vector<std::vector<bool>> hacer_laberinto(int filas = 10, int columnas = 10
 }
 
 void mostrar_laberinto(const std::vector<std::vector<bool>> &laberinto) {
-    for (const auto &fila : laberinto) {
-        for (bool celda : fila) {
-            std::cout << (celda ? "  " : "██"); // Doble espacio para camino, bloque para pared
+    int filas = laberinto.size();
+    int columnas = laberinto[0].size();
+
+    // Imprime borde superior
+    std::cout << "╔";
+    for (int j = 0; j < columnas; ++j) std::cout << "══";
+    std::cout << "╗\n";
+
+    // Imprime filas con bordes laterales
+    for (int i = 0; i < filas; ++i) {
+        std::cout << "║";
+        for (int j = 0; j < columnas; ++j) {
+            std::cout << (laberinto[i][j] ? "  " : "██");
         }
-        std::cout << "\n";
+        std::cout << "║\n";
     }
+
+    // Imprime borde inferior
+    std::cout << "╚";
+    for (int j = 0; j < columnas; ++j) std::cout << "══";
+    std::cout << "╝\n";
 }
 
 void mover_en_laberinto(int posicion_fila, int posicion_columna, std::vector<std::vector<bool>> &laberinto) {
@@ -269,7 +284,8 @@ void mover_en_laberinto(int posicion_fila, int posicion_columna, std::vector<std
 }
 
 void main_6() {
-    std::vector<std::vector<bool>> laberinto = hacer_laberinto(10, 10);
+    const int dim = 30;
+    std::vector<std::vector<bool>> laberinto = hacer_laberinto(dim, dim);
     bool exito = false;
     // while (!exito) {
     //     mostrar_laberinto(laberinto);
