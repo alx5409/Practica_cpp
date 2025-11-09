@@ -3,6 +3,7 @@
 #include <set>
 #include <vector>
 #include <map>
+#include <random>
 
 // 1. Generar todas las combinaciones de un conjunto
 //    Dado un conjunto de números, genera todas las combinaciones posibles de tamaño k.
@@ -217,6 +218,128 @@ void main_5() {
 }
 // 6. Labyrinth/maze solver
 //    Dado un laberinto representado como una matriz, encuentra un camino desde la entrada hasta la salida.
+std::vector<std::vector<bool>> hacer_laberinto(int filas = 10, int columnas = 10) {
+    std::vector<std::vector<bool>> laberinto(filas, std::vector<bool>(columnas, false));     // Inicializa la matriz booleana a todo falso
+
+    // Camino predefinido: escalera diagonal (abajo, derecha, abajo, derecha...)
+    int x = 0, y = 0;
+    laberinto[x][y] = true;
+    while (x < filas - 1 && y < columnas - 1) {
+        x++; laberinto[x][y] = true; // abajo
+        y++; laberinto[x][y] = true; // derecha
+    }
+    // Si quedan filas o columnas, termina el camino hasta el borde
+    while (x < filas - 1) { x++; laberinto[x][y] = true; }
+    while (y < columnas - 1) { y++; laberinto[x][y] = true; }
+    
+    // Rellena el resto aleatoriamente (sin bloquear el camino definido)
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::bernoulli_distribution d(0.6); // probabilidad de ser camino
+
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < columnas; j++) {
+            if (!laberinto[i][j]) { // No sobrescribir el camino
+                laberinto[i][j] = d(gen);
+            }
+        }
+    }
+    return laberinto;
+}
+
+void mostrar_laberinto(const std::vector<std::vector<bool>> &laberinto) {
+    int filas = laberinto.size();
+    int columnas = laberinto[0].size();
+
+    // Imprime borde superior
+    std::cout << "╔";
+    for (int j = 0; j < columnas; ++j) std::cout << "══";
+    std::cout << "╗\n";
+
+    // Imprime filas con bordes laterales
+    for (int i = 0; i < filas; ++i) {
+        std::cout << "║";
+        for (int j = 0; j < columnas; ++j) {
+            std::cout << (laberinto[i][j] ? "  " : "██");
+        }
+        std::cout << "║\n";
+    }
+
+    // Imprime borde inferior
+    std::cout << "╚";
+    for (int j = 0; j < columnas; ++j) std::cout << "══";
+    std::cout << "╝\n";
+}
+
+void mostrar_camino(const std::vector<std::vector<bool>> &laberinto, const std::vector<std::vector<bool>> &camino) {
+    int filas = laberinto.size();
+    int columnas = laberinto[0].size();
+
+    std::cout << "╔";
+    for (int j = 0; j < columnas; ++j) std::cout << "══";
+    std::cout << "╗\n";
+
+    for (int i = 0; i < filas; ++i) {
+        std::cout << "║";
+        for (int j = 0; j < columnas; ++j) {
+            if (camino[i][j])
+                std::cout << " *";
+            else
+                std::cout << (laberinto[i][j] ? "  " : "██");
+        }
+        std::cout << "║\n";
+    }
+
+    std::cout << "╚";
+    for (int j = 0; j < columnas; ++j) std::cout << "══";
+    std::cout << "╝\n";
+}
+
+bool mover_en_laberinto(int fila, int columna, const std::vector<std::vector<bool>> &laberinto, std::vector<std::vector<bool>> &camino) {
+    int filas = laberinto.size();
+    int columnas = laberinto[0].size();
+
+    // Fuera de límites, pared o ya visitado
+    if (fila < 0 || fila >= filas || columna < 0 || columna >= columnas ||
+        !laberinto[fila][columna] || camino[fila][columna]) {
+        return false;
+    }
+
+    // Marca la casilla como parte del camino
+    camino[fila][columna] = true;
+
+    // Si es la meta, termina
+    if (fila == filas - 1 && columna == columnas - 1) {
+        return true;
+    }
+
+    // Prioridad: derecha, abajo, izquierda, arriba
+    if (mover_en_laberinto(fila, columna + 1, laberinto, camino)) return true; // derecha
+    if (mover_en_laberinto(fila + 1, columna, laberinto, camino)) return true; // abajo
+    if (mover_en_laberinto(fila, columna - 1, laberinto, camino)) return true; // izquierda
+    if (mover_en_laberinto(fila - 1, columna, laberinto, camino)) return true; // arriba
+
+    // Si no hay camino, desmarca y retrocede
+    camino[fila][columna] = false;
+    return false;
+}
+
+void main_6() {
+    const int dim = 30;
+    std::vector<std::vector<bool>> laberinto = hacer_laberinto(dim, dim);
+    std::vector<std::vector<bool>> camino(dim, std::vector<bool>(dim, false));
+    bool exito = false;
+
+    std::cout << "Laberinto generado:\n";
+    mostrar_laberinto(laberinto);
+    exito = mover_en_laberinto(0, 0, laberinto, camino);
+    if (exito) {
+        std::cout << "Camino desde la entrada hasta la salida:\n";
+        mostrar_camino(laberinto, camino);
+    } else {
+        std::cout << "No se encontró ningún camino.\n";
+    }
+}
 
 // 7. Palabras en un tablero (Word Search)
 //    Dado un tablero de letras y una lista de palabras, encuentra si se puede formar una palabra moviéndose horizontal, vertical o diagonalmente.
@@ -261,6 +384,6 @@ void main_5() {
 //     Dado un tablero rectangular, encuentra todas las formas de cubrirlo completamente con fichas de dominó (2x1) sin solapamientos ni huecos.
 
 int main() {
-    main_3();
+    main_6();
     return 0;
 }
