@@ -271,27 +271,74 @@ void mostrar_laberinto(const std::vector<std::vector<bool>> &laberinto) {
     std::cout << "╝\n";
 }
 
-void mover_en_laberinto(int posicion_fila, int posicion_columna, std::vector<std::vector<bool>> &laberinto) {
-    // Movimiento simple: intenta moverse hacia la derecha o hacia abajo si es posible
+void mostrar_camino(const std::vector<std::vector<bool>> &laberinto, const std::vector<std::vector<bool>> &camino) {
     int filas = laberinto.size();
     int columnas = laberinto[0].size();
-    if (posicion_fila + 1 < filas && laberinto[posicion_fila + 1][posicion_columna]) {
-        posicion_fila++;
-    } else if (posicion_columna + 1 < columnas && laberinto[posicion_fila][posicion_columna + 1]) {
-        posicion_columna++;
+
+    std::cout << "╔";
+    for (int j = 0; j < columnas; ++j) std::cout << "══";
+    std::cout << "╗\n";
+
+    for (int i = 0; i < filas; ++i) {
+        std::cout << "║";
+        for (int j = 0; j < columnas; ++j) {
+            if (camino[i][j])
+                std::cout << " *";
+            else
+                std::cout << (laberinto[i][j] ? "  " : "██");
+        }
+        std::cout << "║\n";
     }
-    laberinto[posicion_fila][posicion_columna] = true; // Marca la nueva posición como parte del camino
+
+    std::cout << "╚";
+    for (int j = 0; j < columnas; ++j) std::cout << "══";
+    std::cout << "╝\n";
+}
+
+bool mover_en_laberinto(int fila, int columna, const std::vector<std::vector<bool>> &laberinto, std::vector<std::vector<bool>> &camino) {
+    int filas = laberinto.size();
+    int columnas = laberinto[0].size();
+
+    // Fuera de límites, pared o ya visitado
+    if (fila < 0 || fila >= filas || columna < 0 || columna >= columnas ||
+        !laberinto[fila][columna] || camino[fila][columna]) {
+        return false;
+    }
+
+    // Marca la casilla como parte del camino
+    camino[fila][columna] = true;
+
+    // Si es la meta, termina
+    if (fila == filas - 1 && columna == columnas - 1) {
+        return true;
+    }
+
+    // Prioridad: derecha, abajo, izquierda, arriba
+    if (mover_en_laberinto(fila, columna + 1, laberinto, camino)) return true; // derecha
+    if (mover_en_laberinto(fila + 1, columna, laberinto, camino)) return true; // abajo
+    if (mover_en_laberinto(fila, columna - 1, laberinto, camino)) return true; // izquierda
+    if (mover_en_laberinto(fila - 1, columna, laberinto, camino)) return true; // arriba
+
+    // Si no hay camino, desmarca y retrocede
+    camino[fila][columna] = false;
+    return false;
 }
 
 void main_6() {
     const int dim = 30;
     std::vector<std::vector<bool>> laberinto = hacer_laberinto(dim, dim);
+    std::vector<std::vector<bool>> camino(dim, std::vector<bool>(dim, false));
     bool exito = false;
-    // while (!exito) {
-    //     mostrar_laberinto(laberinto);
-    //     mover_en_laberinto(0, 0, laberinto);
-    // }
+
+    std::cout << "Laberinto generado:\n";
     mostrar_laberinto(laberinto);
+    exito = mover_en_laberinto(0, 0, laberinto, camino);
+    if (exito) {
+        std::cout << "Camino desde la entrada hasta la salida:\n";
+        mostrar_camino(laberinto, camino);
+    } else {
+        std::cout << "No se encontró ningún camino.\n";
+    }
 }
 
 // 7. Palabras en un tablero (Word Search)
