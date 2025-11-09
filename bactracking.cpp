@@ -3,6 +3,7 @@
 #include <set>
 #include <vector>
 #include <map>
+#include <random>
 
 // 1. Generar todas las combinaciones de un conjunto
 //    Dado un conjunto de números, genera todas las combinaciones posibles de tamaño k.
@@ -217,6 +218,54 @@ void main_5() {
 }
 // 6. Labyrinth/maze solver
 //    Dado un laberinto representado como una matriz, encuentra un camino desde la entrada hasta la salida.
+std::vector<std::vector<bool>> hacer_laberinto(int filas = 10, int columnas = 10) {
+    std::vector<std::vector<bool>> laberinto(filas, std::vector<bool>(columnas, false));     // Inicializa la matriz booleana a todo falso
+
+    // Define un camino fijo de entrada (0, 0) a salida (filas-1, columnas-1)
+    int x = 0, y = 0;
+    laberinto[x][y] = true; // Marca la celda de inicio como parte del camino
+
+    for (int i = 0; i < filas; i++) {
+        laberinto[i][0] = true;
+    }
+    // Marca el camino desde (filas-1,0) hasta (filas-1,columnas-1)
+    for (int j = 0; j < columnas; j++) {
+        laberinto[filas-1][j] = true;
+    }
+    
+    // Rellena el resto aleatoriamente (sin bloquear el camino definido)
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::bernoulli_distribution d(0.3); // probabilidad de ser pared
+
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < columnas; j++) {
+            if (!laberinto[i][j]) { // No sobrescribir el camino
+                laberinto[i][j] = d(gen);
+            }
+        }
+    }
+    return laberinto;
+}
+
+void mostrar_laberinto(const std::vector<std::vector<bool>> &laberinto) {
+    for (const auto &fila : laberinto) {
+        for (bool celda : fila) {
+            std::cout << (celda ? "  " : "██"); // Doble espacio para camino, bloque para pared
+        }
+        std::cout << "\n";
+    }
+}
+
+void main_6() {
+    std::vector<std::vector<bool>> laberinto = hacer_laberinto(10, 10);
+    bool exito = false;
+    // while (!exito) {
+    //     mostrar_laberinto(laberinto);
+    //     mover_en_laberinto(0, 0, laberinto);
+    // }
+    mostrar_laberinto(laberinto);
+}
 
 // 7. Palabras en un tablero (Word Search)
 //    Dado un tablero de letras y una lista de palabras, encuentra si se puede formar una palabra moviéndose horizontal, vertical o diagonalmente.
@@ -261,6 +310,6 @@ void main_5() {
 //     Dado un tablero rectangular, encuentra todas las formas de cubrirlo completamente con fichas de dominó (2x1) sin solapamientos ni huecos.
 
 int main() {
-    main_3();
+    main_6();
     return 0;
 }
