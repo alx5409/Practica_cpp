@@ -4,6 +4,8 @@
 #include <vector>
 #include <map>
 #include <random>
+#include <string>
+#include <algorithm>
 
 // 1. Generar todas las combinaciones de un conjunto
 //    Dado un conjunto de números, genera todas las combinaciones posibles de tamaño k.
@@ -343,8 +345,340 @@ void main_6() {
 
 // 7. Palabras en un tablero (Word Search)
 //    Dado un tablero de letras y una lista de palabras, encuentra si se puede formar una palabra moviéndose horizontal, vertical o diagonalmente.
+void mostrar_tablero_g(size_t filas, size_t columnas, const std::vector<std::vector<char>> &casillas) {
+    std::cout << "\n\n";
+    for (size_t i = 0; i < filas; i++) {
+        for (size_t j = 0; j < columnas; j++) {
+            std::cout << casillas[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+    std::cout << "\n\n";
+}
+
+size_t maxima_longitud_en_vector(const std::vector<std::string> &vec) {
+    size_t max_length = 0;
+    for (const auto &str : vec) {
+        if (str.length() > max_length) {
+            max_length = str.length();
+        }
+    }
+    return max_length;
+}
+
+class TableroLetras
+{
+public:
+    size_t filas;
+    size_t columnas;
+    std::vector<std::vector<char>> casillas;
+
+    // Constructor
+    TableroLetras(size_t f, size_t c) : filas(f), columnas(c) {
+        casillas = std::vector<std::vector<char>>(filas, std::vector<char>(columnas, ' '));
+        // Rellenar el tablero con letras aleatorias
+        std::string alfabeto = "abcdefghijklmnopqrstuvwxyz";
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(0, alfabeto.size() - 1);
+
+        for (size_t i = 0; i < filas; i++) {
+            for (size_t j = 0; j < columnas; j++) {
+                casillas[i][j] = alfabeto[dis(gen)];
+            }
+        }
+    }
+
+    void mostrar_tablero() {
+        mostrar_tablero_g(filas, columnas, casillas);
+    }
+    
+    std::vector<std::pair<size_t, size_t>> buscar_letra_en_tablero(char letra) {
+        std::vector<std::pair<size_t, size_t>> posiciones = {};
+        for (size_t i = 0; i < filas; i++) {
+            for (size_t j = 0; j < columnas; j++) {
+                if (casillas[i][j] == letra) {
+                    posiciones.push_back({i, j});
+                }
+            }
+        }
+        return posiciones;
+    }
+
+    bool letras_de_palabra_esta_en_tablero(std::string palabra) {
+        // Copia todas las letras del tablero en un vector
+        std::vector<std::pair<size_t, size_t>> posiciones;
+        for (size_t i = 0; i < palabra.length(); i++) {
+            posiciones = buscar_letra_en_tablero(palabra[i]);
+            if (posiciones.empty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    bool es_movimiento_horizontal_valido(const std::pair<size_t, size_t> actual, const std::pair<size_t, size_t> siguiente) {
+        size_t fila_diff = siguiente.first - actual.first;
+        size_t col_diff = siguiente.second - actual.second;
+        return (fila_diff == 0 && (col_diff == 1 || col_diff == -1));
+    }
+
+    bool comprobar_palabra_horizontal(const std::pair<size_t, size_t> inicio, std::string palabra) {
+        size_t fila = inicio.first;
+        size_t columna = inicio.second;
+        // Comprobar hacia la derecha
+        if (columna + palabra.length() <= columnas) {
+            bool coincide = true;
+            for (size_t k = 0; k < palabra.length(); k++) {
+                if (casillas[fila][columna + k] != palabra[k]) {
+                    coincide = false;
+                    break;
+                }
+            }
+            if (coincide) return true;
+        }
+        // Comprobar hacia la izquierda
+        if (columna >= palabra.length() - 1) {
+            bool coincide = true;
+            for (size_t k = 0; k < palabra.length(); k++) {
+                if (casillas[fila][columna - k] != palabra[k]) {
+                    coincide = false;
+                    break;
+                }
+            }
+            if (coincide) return true;
+        }
+        return false;
+    }
+
+    bool comprobar_palabra_vertical(const std::pair<size_t, size_t> inicio, std::string palabra) {
+        size_t fila = inicio.first;
+        size_t columna = inicio.second;
+        // Comprobar hacia abajo
+        if (fila + palabra.length() <= filas) {
+            bool coincide = true;
+            for (size_t k = 0; k < palabra.length(); k++) {
+                if (casillas[fila + k][columna] != palabra[k]) {
+                    coincide = false;
+                    break;
+                }
+            }
+            if (coincide) return true;
+        }
+        // Comprobar hacia arriba
+        if (fila >= palabra.length() - 1) {
+            bool coincide = true;
+            for (size_t k = 0; k < palabra.length(); k++) {
+                if (casillas[fila - k][columna] != palabra[k]) {
+                    coincide = false;
+                    break;
+                }
+            }
+            if (coincide) return true;
+        }
+        return false;
+    }
+
+    bool comprobar_palabra_diagonal(const std::pair<size_t, size_t> inicio, std::string palabra) {
+        size_t fila = inicio.first;
+        size_t columna = inicio.second;
+        // Comprobar diagonal (abajo derecha)
+        if (fila + palabra.length() <= filas && columna + palabra.length() <= columnas) {
+            bool coincide = true;
+            for (size_t k = 0; k < palabra.length(); k++) {
+                if (casillas[fila + k][columna + k] != palabra[k]) {
+                    coincide = false;
+                    break;
+                }
+            }
+            if (coincide) return true;
+        }
+        // Comprobar diagonal (abajo izquierda)
+        if (fila + palabra.length() <= filas && columna >= palabra.length() - 1) {
+            bool coincide = true;
+            for (size_t k = 0; k < palabra.length(); k++) {
+                if (casillas[fila + k][columna - k] != palabra[k]) {
+                    coincide = false;
+                    break;
+                }
+            }
+            if (coincide) return true;
+        }
+        // Comprobar diagonal (arriba derecha)
+        if (fila >= palabra.length() - 1 && columna + palabra.length() <= columnas) {
+            bool coincide = true;
+            for (size_t k = 0; k < palabra.length(); k++) {
+                if (casillas[fila - k][columna + k] != palabra[k]) {
+                    coincide = false;
+                    break;
+                }
+            }
+            if (coincide) return true;
+        }
+        // Comprobar diagonal (arriba izquierda)
+        if (fila >= palabra.length() - 1 && columna >= palabra.length() - 1) {
+            bool coincide = true;
+            for (size_t k = 0; k < palabra.length(); k++) {
+                if (casillas[fila - k][columna - k] != palabra[k]) {
+                    coincide = false;
+                    break;
+                }
+            }
+            if (coincide) return true;
+        }
+        return false;
+    }
+
+    bool es_movimiento_vertical_valido(const std::pair<size_t, size_t> actual, const std::pair<size_t, size_t> siguiente) {
+        size_t fila_diff = siguiente.first - actual.first;
+        size_t col_diff = siguiente.second - actual.second;
+        return (col_diff == 0 && (fila_diff == 1 || fila_diff == -1));
+    }
+
+    bool es_movimiento_diagonal_valido(const std::pair<size_t, size_t> actual, const std::pair<size_t, size_t> siguiente) {
+        size_t fila_diff = siguiente.first - actual.first;
+        size_t col_diff = siguiente.second - actual.second;
+        return (std::abs(static_cast<int>(fila_diff)) == 1 && std::abs(static_cast<int>(col_diff)) == 1);
+    }
+
+    bool palabra_con_posicion_inicial_esta_en_tablero(const std::pair<size_t, size_t> inicio, std::string palabra) {
+        return comprobar_palabra_horizontal(inicio, palabra) ||
+               comprobar_palabra_vertical(inicio, palabra) ||
+               comprobar_palabra_diagonal(inicio, palabra);
+    }
+
+    
+
+    void mostrar_palabra_en_tablero(std::string palabra, const  std::pair<size_t, size_t> inicio) {
+        // Marcar la palabra en el tablero y sustituir el resto de las letras por *
+        std::vector<std::vector<char>> casilla_con_palabras(filas, std::vector<char>(columnas, '.'));
+        if (comprobar_palabra_horizontal(inicio, palabra)) {
+            for (size_t k = 0; k < palabra.length(); k++) {
+            size_t fila = inicio.first;
+            size_t columna = inicio.second;
+            // Hacia la derecha
+            if (columna + palabra.length() <= columnas && casillas[fila][columna + k] == palabra[k]) {
+                casilla_con_palabras[fila][columna + k] = palabra[k];
+            }
+            // Hacia la izquierda
+            if (columna >= palabra.length() - 1 && casillas[fila][columna - k] == palabra[k]) {
+                casilla_con_palabras[fila][columna - k] = palabra[k];
+            }
+            }
+        }
+
+        if (comprobar_palabra_vertical(inicio, palabra)) {
+            for (size_t k = 0; k < palabra.length(); k++) {
+                size_t fila = inicio.first;
+                size_t columna = inicio.second;
+                // Hacia abajo
+                if (fila + palabra.length() <= filas && casilla_con_palabras[fila + k][columna] == palabra[k]) {
+                    casilla_con_palabras[fila + k][columna] = palabra[k];
+                }
+                // Hacia arriba
+                if (fila >= palabra.length() - 1 && casilla_con_palabras[fila - k][columna] == palabra[k]) {
+                    casilla_con_palabras[fila - k][columna] = palabra[k];
+                }
+            }
+        }
+
+        if (comprobar_palabra_diagonal(inicio, palabra)) {
+            for (size_t k = 0; k < palabra.length(); k++) {
+                size_t fila = inicio.first;
+                size_t columna = inicio.second;
+                // Diagonal (abajo derecha)
+                if (fila + palabra.length() <= filas && columna + palabra.length() <= columnas &&
+                    casilla_con_palabras[fila + k][columna + k] == palabra[k]) {
+                    casilla_con_palabras[fila + k][columna + k] = palabra[k];
+                }
+                // Diagonal (abajo izquierda)
+                if (fila + palabra.length() <= filas && columna >= palabra.length() - 1 &&
+                    casilla_con_palabras[fila + k][columna - k] == palabra[k]) {
+                    casilla_con_palabras[fila + k][columna - k] = palabra[k];
+                }
+                // Diagonal (arriba derecha)
+                if (fila >= palabra.length() - 1 && columna + palabra.length() <= columnas &&
+                    casilla_con_palabras[fila - k][columna + k] == palabra[k]) {
+                    casilla_con_palabras[fila - k][columna + k] = palabra[k];
+                }
+                // Diagonal (arriba izquierda)
+                if (fila >= palabra.length() - 1 && columna >= palabra.length() - 1 &&
+                    casilla_con_palabras[fila - k][columna - k] == palabra[k]) {
+                    casilla_con_palabras[fila - k][columna - k] = palabra[k];
+                }
+            }
+        }
+        mostrar_tablero_g(filas, columnas, casilla_con_palabras);
+    }
+        
+
+    bool palabra_esta_en_tablero(std::string palabra) {
+        // Primera comprobación rápida: si alguna letra no está en el tablero, devuelve false
+        if (!letras_de_palabra_esta_en_tablero(palabra)) {
+            return false;
+        }
+        std::vector<std::pair<size_t, size_t>> posiciones_iniciales = buscar_letra_en_tablero(palabra[0]);
+        for (const auto &posicion_inicial : posiciones_iniciales) {
+            if (palabra_con_posicion_inicial_esta_en_tablero(posicion_inicial, palabra)) {
+                mostrar_palabra_en_tablero(palabra, posicion_inicial);
+                return true;
+            }
+        }
+        return false;
+    }
+};
+
+void main_7() {
+    std::vector<std::string> lista_palabras = {"a", "es", "cpp", "hola", "mundo", "backtracking"};
+    size_t dim = 1 * maxima_longitud_en_vector(lista_palabras);
+    TableroLetras tablero = TableroLetras(dim, dim);
+    tablero.mostrar_tablero();
+    for (size_t i = 0; i < lista_palabras.size(); i++) {
+        if(tablero.palabra_esta_en_tablero(lista_palabras[i])) {
+            std::cout << "La palabra \"" << lista_palabras[i] << "\" SI está en el tablero.\n";
+            continue;
+        }
+        std::cout << "La palabra \"" << lista_palabras[i] << "\" NO está en el tablero.\n";
+    }
+}
 
 // 8. Partición de un conjunto en k subconjuntos con suma igual
+bool suman_igual(const std::vector<int> &conjunto1, const std::vector<int> &conjunto2, int k) {
+    int suma1 = 0;
+    int suma2 = 0;
+    for (int num : conjunto1) {
+        suma1 += num;
+    }
+    for (int num : conjunto2) {
+        suma2 += num;
+    }
+    return suma1 == suma2;
+}
+
+std::vector<std::vector<int>> subconjuntos_long_k(const std::vector<int> &numeros, int k) {
+
+    return {};
+}
+
+std::vector<std::vector<int>> particionar_en_k_subconjuntos_con_suma_igual(const std::vector<int> &numeros, int k) {
+    return {};
+}
+
+bool existe_particion_k_subconjuntos(const std::vector<int> &numeros, int k) {
+    return false;
+}
+
+void main_8() {
+    std::vector<int> numeros = {4, 3, 2, 3, 5, 2, 1};
+    int k = 4;
+    if (existe_particion_k_subconjuntos(numeros, k)) {
+        std::cout << "Es posible particionar el conjunto en " << k << " subconjuntos con la misma suma.\n";
+    } else {
+        std::cout << "No es posible particionar el conjunto en " << k << " subconjuntos con la misma suma.\n";
+    }
+}
+
 //    Dado un conjunto de números, determina si se puede dividir en k subconjuntos con la misma suma.
 
 // 9. Colorear un grafo (Graph Coloring)
@@ -384,6 +718,6 @@ void main_6() {
 //     Dado un tablero rectangular, encuentra todas las formas de cubrirlo completamente con fichas de dominó (2x1) sin solapamientos ni huecos.
 
 int main() {
-    main_6();
+    main_7();
     return 0;
 }
