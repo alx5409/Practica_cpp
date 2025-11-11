@@ -644,6 +644,41 @@ void main_7() {
 }
 
 // 8. Partición de un conjunto en k subconjuntos con suma igual
+bool suman_igual(const std::vector<int> &conjunto1, const std::vector<int> &conjunto2, int k) {
+    int suma1 = 0;
+    int suma2 = 0;
+    for (int num : conjunto1) {
+        suma1 += num;
+    }
+    for (int num : conjunto2) {
+        suma2 += num;
+    }
+    return suma1 == suma2;
+}
+
+std::vector<std::vector<int>> subconjuntos_long_k(const std::vector<int> &numeros, int k) {
+
+    return {};
+}
+
+std::vector<std::vector<int>> particionar_en_k_subconjuntos_con_suma_igual(const std::vector<int> &numeros, int k) {
+    return {};
+}
+
+bool existe_particion_k_subconjuntos(const std::vector<int> &numeros, int k) {
+    return false;
+}
+
+void main_8() {
+    std::vector<int> numeros = {4, 3, 2, 3, 5, 2, 1};
+    int k = 4;
+    if (existe_particion_k_subconjuntos(numeros, k)) {
+        std::cout << "Es posible particionar el conjunto en " << k << " subconjuntos con la misma suma.\n";
+    } else {
+        std::cout << "No es posible particionar el conjunto en " << k << " subconjuntos con la misma suma.\n";
+    }
+}
+
 //    Dado un conjunto de números, determina si se puede dividir en k subconjuntos con la misma suma.
 
 // 9. Colorear un grafo (Graph Coloring)
