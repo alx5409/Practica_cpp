@@ -6,6 +6,8 @@
 #include <random>
 #include <string>
 #include <algorithm>
+#include <utility>
+#include <functional>
 
 // 1. Generar todas las combinaciones de un conjunto
 //    Dado un conjunto de números, genera todas las combinaciones posibles de tamaño k.
@@ -665,23 +667,43 @@ std::vector<int> ordenar_conjunto_ascendente(const std::vector<int> &conjunto) {
 }
 
 std::vector<int> obtener_subconjunto_con_suma_objetivo(const std::vector<int> &conjunto, int suma_objetivo) {
-    // std::vector<int> conjunto_ordenado = ordenar_conjunto_ascendente(conjunto);
-    // for (size_t i = 0; i < conjunto_ordenado.size(); i++) {
-    //     if (conjunto_ordenado[i] > suma_objetivo) {
-    //         break;
-    //     }
+    std::vector<int> conjunto_ordenado = ordenar_conjunto_ascendente(conjunto);
+    int suma_actual = 0;
+    for (size_t i = 0; i < conjunto_ordenado.size(); i++) {
+
+        if (conjunto_ordenado[i] > suma_objetivo) {
+            break;
+        }
         
-    // }
+    }
 }
 
-bool existe_particion_k_subconjuntos(const std::vector<int> &conjunto, int k, int suma) {
+bool existe_particion_k_subconjuntos(const std::vector<int>& nums, int k, int target) {
+    int n = nums.size();
+    int total = 0;
+    for (int x : nums) total += x;
+    if (k <= 0 || total != k * target) return false;
 
+    std::vector<bool> usado(n, false);
+    std::function<bool(int, int, int)> backtrack = [&](int start, int k_rest, int suma) {
+        if (k_rest == 0) return true;
+        if (suma == target) return backtrack(0, k_rest - 1, 0);
+        for (int i = start; i < n; ++i) {
+            if (!usado[i] && suma + nums[i] <= target) {
+                usado[i] = true;
+                if (backtrack(i + 1, k_rest, suma + nums[i])) return true;
+                usado[i] = false;
+            }
+        }
+        return false;
+    };
+    return backtrack(0, k, 0);
 }
 
 void main_8() {
     std::vector<int> conjunto = {4, 3, 2, 3, 5, 2, 1};
     int k = 4;
-    int suma = 6;
+    int suma = 5;
     if (existe_particion_k_subconjuntos(conjunto, k, suma)) {
         std::cout << "Es posible particionar el conjunto en " << k << " subconjuntos con la misma suma.\n";
         return;
@@ -700,9 +722,6 @@ void main_8() {
 
 // 12. Generar todas las particiones de un número
 //     Dado un número n, genera todas las formas posibles de escribir n como suma de números positivos.
-void main_12() {
-    // Implementación pendiente
-}
 
 // 13. Generar todas las combinaciones de paréntesis válidos
 //     Dado n pares de paréntesis, genera todas las combinaciones válidas.
@@ -729,6 +748,6 @@ void main_12() {
 //     Dado un tablero rectangular, encuentra todas las formas de cubrirlo completamente con fichas de dominó (2x1) sin solapamientos ni huecos.
 
 int main() {
-    main_7();
+    main_8();
     return 0;
 }
