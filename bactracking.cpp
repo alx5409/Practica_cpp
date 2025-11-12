@@ -645,7 +645,7 @@ void main_7() {
 
 // 8. Partición de un conjunto en k subconjuntos con suma igual
 //    Dado un conjunto de números, determina si se puede dividir en k subconjuntos con la misma suma.
-bool suman_igual(const std::vector<std::vector<int>> &subconjuntos, int suma k) {
+bool suman_igual(const std::vector<std::vector<int>> &subconjuntos, int suma) {
     for (const auto &subconjunto : subconjuntos) {
         int suma_subconjunto = 0;
         for (int num : subconjunto) {
@@ -658,14 +658,31 @@ bool suman_igual(const std::vector<std::vector<int>> &subconjuntos, int suma k) 
     return true;
 }
 
-bool existe_particion_k_subconjuntos(const std::vector<int> &conjunto, int k) {
-    
+std::vector<int> ordenar_conjunto_ascendente(const std::vector<int> &conjunto) {
+    std::vector<int> conjunto_ordenado = conjunto;
+    std::sort(conjunto_ordenado.begin(), conjunto_ordenado.end());
+    return conjunto_ordenado;
+}
+
+std::vector<int> obtener_subconjunto_con_suma_objetivo(const std::vector<int> &conjunto, int suma_objetivo) {
+    // std::vector<int> conjunto_ordenado = ordenar_conjunto_ascendente(conjunto);
+    // for (size_t i = 0; i < conjunto_ordenado.size(); i++) {
+    //     if (conjunto_ordenado[i] > suma_objetivo) {
+    //         break;
+    //     }
+        
+    // }
+}
+
+bool existe_particion_k_subconjuntos(const std::vector<int> &conjunto, int k, int suma) {
+
 }
 
 void main_8() {
     std::vector<int> conjunto = {4, 3, 2, 3, 5, 2, 1};
     int k = 4;
-    if (existe_particion_k_subconjuntos(conjunto, k)) {
+    int suma = 6;
+    if (existe_particion_k_subconjuntos(conjunto, k, suma)) {
         std::cout << "Es posible particionar el conjunto en " << k << " subconjuntos con la misma suma.\n";
         return;
     }
@@ -683,6 +700,9 @@ void main_8() {
 
 // 12. Generar todas las particiones de un número
 //     Dado un número n, genera todas las formas posibles de escribir n como suma de números positivos.
+void main_12() {
+    // Implementación pendiente
+}
 
 // 13. Generar todas las combinaciones de paréntesis válidos
 //     Dado n pares de paréntesis, genera todas las combinaciones válidas.
